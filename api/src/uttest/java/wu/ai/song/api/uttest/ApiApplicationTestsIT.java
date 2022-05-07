@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 //不启动服务器,使用mockMvc进行测试http请求。启动了完整的Spring应用程序上下文，但没有启动服务器
 @AutoConfigureMockMvc
-class ApiApplicationTests {
+class ApiApplicationTestsIT {
 
     @Test
     void contextLoads() {
