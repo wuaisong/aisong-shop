@@ -17,6 +17,12 @@
     <properties>
         <java.version>1.8</java.version>
         <maven.deploy.skip>false</maven.deploy.skip>
+        <exclude-dependencies-group-ids>
+            org.projectlombok,
+            com.github.xiaoymin,
+            io.springfox,
+            io.swagger
+        </exclude-dependencies-group-ids>
     </properties>
     <dependencies>
         <dependency>
@@ -84,13 +90,20 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <!--配置启动类-->
+                    <!--<mainClass></mainClass>-->
+                    <excludeGroupIds>${exclude-dependencies-group-ids}</excludeGroupIds>
+                    <!--本地不执行springboot打包-->
+                    <!--<skip>true</skip>-->
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!--转移打包文件的位置-->
             <plugin>
@@ -125,5 +138,15 @@
             </testResource>
         </testResources>
     </build>
+    <profiles>
+        <profile>
+            <id>native</id>
+            <properties>
+                <exclude-dependencies-group-ids>
+                    org.projectlombok
+                </exclude-dependencies-group-ids>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
