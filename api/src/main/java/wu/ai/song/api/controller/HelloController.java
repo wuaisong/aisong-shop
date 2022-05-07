@@ -1,6 +1,7 @@
 package wu.ai.song.api.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,8 +16,13 @@ import static java.util.Optional.ofNullable;
 @RestController
 @Slf4j
 public class HelloController {
+
+    @Value("${spring.application.name}")
+    private String springApplicationName;
+
     @GetMapping("/hello")
     public Object hello() {
+        log.info("debug: hello~{}", springApplicationName);
         log.debug("debug: hello~");
         log.info("info: hello~");
         log.warn("warn: hello~");

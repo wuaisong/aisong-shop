@@ -19,9 +19,16 @@
     <name>aisong-shop</name>
 
     <properties>
+        <profile>ut,myRepository1,myRepository2,myRepository3</profile>
         <revision>2.34</revision>
         <lombok-version>1.18.22</lombok-version>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
+
+    <!--加这个才会有root-->
+    <modules>
+        <module>api</module>
+    </modules>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -41,8 +48,16 @@
 
 
     <build>
+        <finalName>aisong-shop</finalName>
         <pluginManagement>
             <plugins>
+                <!--项目添加sonar服务-->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.7.0.1746</version>
+                </plugin>
+                <!--项目添加pom版本跨父工程传递-->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
@@ -51,7 +66,9 @@
                         <!-- 避免IDE将 .flattened-pom.xml 自动识别为功能模块 -->
                         <flattenedPomFilename>pom-xml-flattened</flattenedPomFilename>
                         <updatePomFile>true</updatePomFile>
+                        <!--只替换版本-->
                         <!--<flattenMode>resolveCiFriendliesOnly</flattenMode>-->
+                        <!--最瘦版本pom-->
                         <flattenMode>clean</flattenMode>
                     </configuration>
                     <executions>
@@ -71,13 +88,110 @@
                         </execution>
                     </executions>
                 </plugin>
+                <!--单元测试覆盖率-->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.7</version>
+                    <executions>
+                        <execution>
+                            <id>prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>post-unit-test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>target/jacoco.exec</dataFile>
+                                <outputDirectory>target/jacoco-ut</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!--控制是否执行test测试-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.2</version>
+                    <configuration>
+                        <skipTests>false</skipTests>
+                    </configuration>
+                </plugin>
+                <!--集成测试-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.22.2</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
+    <!--定义关于区分集成测试及单元测试代码的profiles-->
+    <profiles>
+        <!-- The Configuration of the development profile -->
+        <profile>
+            <id>it</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!--<build.profile.id>it</build.profile.id>-->
+                <!--Only unit tests are run when the development profile is active-->
+                <skip.integration.tests>true</skip.integration.tests>
+                <skip.unit.tests>false</skip.unit.tests>
+            </properties>
+        </profile>
+        <!-- The Configuration of the integration-test profile -->
+        <profile>
+            <id>ut</id>
+            <properties>
+                <!--<build.profile.id>ut</build.profile.id>-->
+                <!--Only integration tests are run when the integration-test profile is active-->
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
+    </profiles>
 </project>
