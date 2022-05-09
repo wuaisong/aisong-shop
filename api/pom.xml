@@ -16,7 +16,6 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
-        <maven.deploy.skip>true</maven.deploy.skip>
         <exclude-dependencies-group-ids>
             org.projectlombok,
             com.github.xiaoymin,
@@ -143,15 +142,6 @@
             </testResource>
         </testResources>
     </build>
-    <profiles>
-        <profile>
-            <id>native</id>
-            <properties>
-                <exclude-dependencies-group-ids>
-                    org.projectlombok
-                </exclude-dependencies-group-ids>
-            </properties>
-        </profile>
-    </profiles>
+
 
 </project>

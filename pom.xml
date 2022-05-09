@@ -22,8 +22,6 @@
         <profile>ut</profile>
         <revision>2.34-SNAPSHOT</revision>
         <lombok-version>1.18.22</lombok-version>
-        <!--deploy是否跳过-->
-        <!--<maven.deploy.skip>true</maven.deploy.skip>-->
     </properties>
 
     <repositories>
@@ -44,7 +42,7 @@
         </repository>
         <repository>
             <id>spring-releases</id>
-            <url>http://repo.spring.io/libs-release</url>
+            <url>http://repo.spring.io/libs-release/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -58,6 +56,33 @@
             </releases>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>local-repo</id>
+            <url>http://192.168.71.128:8081/repository/my-common/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <url>http://repo.spring.io/libs-release</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
     <!--加这个才会有root-->
     <modules>
@@ -217,28 +242,28 @@
                 </executions>
             </plugin>
             <!--获取本地时间插件 -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>timestamp-property</id>
-                        <goals>
-                            <goal>timestamp-property</goal>
-                        </goals>
-                        <configuration>
-                            <name>build.time</name>
-                            <pattern>yyyy-MM-dd HH:mm:ss</pattern>
-                            <timeZone>GMT+8</timeZone>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <version>2.2.6</version>
-            </plugin>
+            <!--<plugin>-->
+            <!--    <groupId>org.codehaus.mojo</groupId>-->
+            <!--    <artifactId>build-helper-maven-plugin</artifactId>-->
+            <!--    <executions>-->
+            <!--        <execution>-->
+            <!--            <id>timestamp-property</id>-->
+            <!--            <goals>-->
+            <!--                <goal>timestamp-property</goal>-->
+            <!--            </goals>-->
+            <!--            <configuration>-->
+            <!--                <name>build.time</name>-->
+            <!--                <pattern>yyyy-MM-dd HH:mm:ss</pattern>-->
+            <!--                <timeZone>GMT+8</timeZone>-->
+            <!--            </configuration>-->
+            <!--        </execution>-->
+            <!--    </executions>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+            <!--    <groupId>pl.project13.maven</groupId>-->
+            <!--    <artifactId>git-commit-id-plugin</artifactId>-->
+            <!--    <version>2.2.6</version>-->
+            <!--</plugin>-->
             <!--<plugin>-->
             <!--    <groupId>org.apache.maven.plugins</groupId>-->
             <!--    <artifactId>maven-compiler-plugin</artifactId>-->
@@ -249,14 +274,14 @@
             <!--    </configuration>-->
             <!--</plugin>-->
             <!-- 组件发布插件-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
-                <!--<configuration>-->
-                <!--    <releaseProfiles>yxt.release</releaseProfiles>-->
-                <!--</configuration>-->
-            </plugin>
+            <!--<plugin>-->
+            <!--    <groupId>org.apache.maven.plugins</groupId>-->
+            <!--    <artifactId>maven-release-plugin</artifactId>-->
+            <!--    <version>2.5.3</version>-->
+            <!--    <configuration>-->
+            <!--        <releaseProfiles>aisong-dev</releaseProfiles>-->
+            <!--    </configuration>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 
@@ -271,5 +296,14 @@
             <url>http://192.168.71.128:8081/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
-
+    <profiles>
+        <profile>
+            <id>native</id>
+            <properties>
+                <exclude-dependencies-group-ids>
+                    org.projectlombok
+                </exclude-dependencies-group-ids>
+            </properties>
+        </profile>
+    </profiles>
 </project>
