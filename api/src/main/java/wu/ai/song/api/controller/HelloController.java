@@ -23,10 +23,13 @@ public class HelloController {
     @Value("${spring.application.name}")
     private String springApplicationName;
 
+    @Value("${app.build.time}")
+    private String appBuildTime;
+
     @GetMapping("/hello")
     public Object hello() {
         log.info("debug: hello~{}", springApplicationName);
-        ByteUtils.asString("wuyaming".getBytes(StandardCharsets.UTF_8));
+        log.info("debug: hello~{}", appBuildTime);
         return "Hello World~";
     }
 

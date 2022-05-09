@@ -95,7 +95,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!--配置启动类-->
-                    <!--<mainClass></mainClass>-->
+                    <mainClass>wu.ai.song.api.ApiApplication</mainClass>
                     <excludeGroupIds>${exclude-dependencies-group-ids}</excludeGroupIds>
                     <!--本地不执行springboot打包-->
                     <!--<skip>true</skip>-->

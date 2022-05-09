@@ -242,28 +242,29 @@
                 </executions>
             </plugin>
             <!--获取本地时间插件 -->
-            <!--<plugin>-->
-            <!--    <groupId>org.codehaus.mojo</groupId>-->
-            <!--    <artifactId>build-helper-maven-plugin</artifactId>-->
-            <!--    <executions>-->
-            <!--        <execution>-->
-            <!--            <id>timestamp-property</id>-->
-            <!--            <goals>-->
-            <!--                <goal>timestamp-property</goal>-->
-            <!--            </goals>-->
-            <!--            <configuration>-->
-            <!--                <name>build.time</name>-->
-            <!--                <pattern>yyyy-MM-dd HH:mm:ss</pattern>-->
-            <!--                <timeZone>GMT+8</timeZone>-->
-            <!--            </configuration>-->
-            <!--        </execution>-->
-            <!--    </executions>-->
-            <!--</plugin>-->
-            <!--<plugin>-->
-            <!--    <groupId>pl.project13.maven</groupId>-->
-            <!--    <artifactId>git-commit-id-plugin</artifactId>-->
-            <!--    <version>2.2.6</version>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>timestamp-property</id>
+                        <goals>
+                            <goal>timestamp-property</goal>
+                        </goals>
+                        <configuration>
+                            <name>build.time</name>
+                            <pattern>MM/dd/yyyy hh:mm aa</pattern>
+                            <locale>en_US</locale>
+                            <timeZone>America/Detroit</timeZone>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.6</version>
+            </plugin>
             <!--<plugin>-->
             <!--    <groupId>org.apache.maven.plugins</groupId>-->
             <!--    <artifactId>maven-compiler-plugin</artifactId>-->
