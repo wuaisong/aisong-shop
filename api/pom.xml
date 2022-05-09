@@ -16,7 +16,7 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
-        <maven.deploy.skip>false</maven.deploy.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
         <exclude-dependencies-group-ids>
             org.projectlombok,
             com.github.xiaoymin,
@@ -25,6 +25,11 @@
         </exclude-dependencies-group-ids>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>aisong</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>

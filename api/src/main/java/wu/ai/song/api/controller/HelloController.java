@@ -4,9 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wu.ai.song.util.ByteUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.nio.charset.StandardCharsets;
 
 import static java.util.Optional.ofNullable;
 
@@ -23,10 +26,7 @@ public class HelloController {
     @GetMapping("/hello")
     public Object hello() {
         log.info("debug: hello~{}", springApplicationName);
-        log.debug("debug: hello~");
-        log.info("info: hello~");
-        log.warn("warn: hello~");
-        log.error("error: hello~");
+        ByteUtils.asString("wuyaming".getBytes(StandardCharsets.UTF_8));
         return "Hello World~";
     }
 
