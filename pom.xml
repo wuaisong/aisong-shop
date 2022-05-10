@@ -229,7 +229,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <inherited>false</inherited>
                 <configuration>
                     <attach>true</attach>
                 </configuration>

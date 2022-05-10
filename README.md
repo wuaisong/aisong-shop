@@ -10,9 +10,10 @@
 
 #### TODO
 
-- 加入mock，完善测试用例 
+- 加入mock，完善测试用例
 - 配置springbootmaven插件
-- 完善nexus相关内容
+- 本地禁止推送，只能拉取
+- 没有推送源码到nexus
 
 #### 安装教程
 
