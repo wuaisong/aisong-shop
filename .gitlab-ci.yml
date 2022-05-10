@@ -1,0 +1,8 @@
+maven_build:
+    stage: build
+    script:
+        - mvn clean install deploy -U -Dmaven.test.skip=true
+    tags:
+        - cisonarjdk11
+    only:
+        - master
