@@ -28,14 +28,14 @@
     <repositories>
         <repository>
             <id>local-repo</id>
-            <url>http://192.168.71.130:8081/repository/my-common/</url>
+            <url>http://127.0.0.1:9001/repository/my-common/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
             <id>local-snapshots</id>
-            <url>http://192.168.71.130:8081/repository/my-snapshots/</url>
+            <url>http://127.0.0.1:9001/repository/my-snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -60,7 +60,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>local-repo</id>
-            <url>http://192.168.71.130:8081/repository/my-common/</url>
+            <url>http://127.0.0.1:9001/repository/my-common/</url>
         </pluginRepository>
         <pluginRepository>
             <id>spring-releases</id>
@@ -206,6 +206,30 @@
         </pluginManagement>
         <plugins>
             <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <!--配置基本镜像-->
+                    <from>
+                        <image>openjdk:8-jdk-alpine</image>
+                    </from>
+                    <!--配置最终推送的地址，仓库名，镜像名-->
+                    <to>
+                        <image>10.0.99.8:9009/myproject/test</image>
+                    </to>
+                </configuration>
+                <!--绑定到maven lifecicle-->
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
             </plugin>
@@ -286,15 +310,16 @@
         </plugins>
     </build>
 
+
     <!-- 组件发布仓库地址 -->
     <distributionManagement>
         <snapshotRepository>
             <id>nexus.snapshot</id>
-            <url>http://192.168.71.130:8081/repository/maven-snapshots/</url>
+            <url>http://127.0.0.1:9001/repository/maven-snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>nexus.release</id>
-            <url>http://192.168.71.130:8081/repository/maven-releases/</url>
+            <url>http://127.0.0.1:9001/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
     <profiles>
