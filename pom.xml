@@ -216,7 +216,7 @@
                     </from>
                     <!--配置最终推送的地址，仓库名，镜像名-->
                     <to>
-                        <image>10.0.99.8:9009/myproject/test</image>
+                        <image>127.0.0.1:9009/myproject/test</image>
                     </to>
                 </configuration>
                 <!--绑定到maven lifecicle-->
