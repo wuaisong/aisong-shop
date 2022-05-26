@@ -1,6 +1,7 @@
 package wu.ai.song.api.uttest;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.cursor.Cursor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,12 +11,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserDao;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @SpringBootTest
 //不启动服务器,使用mockMvc进行测试http请求。启动了完整的Spring应用程序上下文，但没有启动服务器
@@ -50,16 +54,19 @@ class ApiApplicationTests {
      */
     @Test
     public void testInsert() {
-        User user = new User();
-        user.setName("墨白君");
-        user.setAge(25);
-        user.setEmail("mobaijun8@163.com");
-        // mybatis-plus会自动帮助我们生成主键ID
-        int insert = userDao.insert(user);
-        // 被影响的行数
-        System.out.println("insert = " + insert);
-        // ID会自动回填
-        System.out.println("user = " + user);
+        IntStream.range(0, 1000).forEach(i -> {
+            User user = new User();
+            user.setName("墨白君");
+            user.setAge(25);
+            user.setEmail("mobaijun8@163.com");
+            // mybatis-plus会自动帮助我们生成主键ID
+            int insert = userDao.insert(user);
+            // 被影响的行数
+            System.out.println("insert = " + insert);
+            // ID会自动回填
+            System.out.println("user = " + user);
+        });
+
     }
 
     /**
@@ -132,6 +139,7 @@ class ApiApplicationTests {
         List<User> users = userDao.selectByMap(map);
         users.forEach(System.out::println);
     }
+
     /**
      * 测试分页查询
      */
@@ -158,17 +166,17 @@ class ApiApplicationTests {
     public void testDeleteById() {
         userDao.deleteById(1269882840871374854L);
     }
+
     /**
      * 批量删除
      */
     @Test
     public void testDeleteList() {
-        userDao.deleteBatchIds(Arrays.asList(1269882840871374853L,
-                1269882840871374852L,
-                1269882840871374851L,
-                1269882840871374850L,
-                1269882840871374849L));
+        userDao.deleteBatchIds(
+                Arrays.asList(1269882840871374853L, 1269882840871374852L, 1269882840871374851L, 1269882840871374850L,
+                        1269882840871374849L));
     }
+
     /**
      * 通过集合删除
      */
@@ -195,6 +203,21 @@ class ApiApplicationTests {
     public void contextLoads2() {
         List<User> users = userDao.selectList(null);
         users.forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional
+    public void testCursor1() {
+        List<User> users = userDao.queryDepartmentAll();
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional
+    public void testCursor2() throws IOException {
+        try (Cursor<User> users = userDao.cursorQueryDepartmentAll()) {
+            users.forEach(System.out::println);
+        }
     }
 
 }

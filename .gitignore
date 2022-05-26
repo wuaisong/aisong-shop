@@ -4,3 +4,4 @@
 **/*.ipr
 **/target
 **/pom-xml-flattened
+**/sql.log

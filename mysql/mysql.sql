@@ -45,3 +45,5 @@ set name    = 'kuangshen',
     version = version + 1
 where id = 2
   and version = 1;
+
+select count(1) from user;
