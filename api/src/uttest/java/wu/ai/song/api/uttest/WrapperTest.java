@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserDao;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -96,8 +97,14 @@ public class WrapperTest {
     }
 
     /**
+     * @link https://juejin.cn/post/6999145665787854856
      * 测试驼峰转换
      * 新增事务后方法会公用一个sql session
+     * TransactionAspectSupport#invokeWithinTransaction
+     * SqlSessionTemplate#selectList(String, Object)
+     * TransactionSynchronization
+     * AbstractPlatformTransactionManager
+     * AbstractPlatformTransactionManager#processCommit
      */
     @Test
     @Transactional
