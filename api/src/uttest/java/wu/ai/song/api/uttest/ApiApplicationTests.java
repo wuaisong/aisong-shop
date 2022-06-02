@@ -215,7 +215,7 @@ class ApiApplicationTests {
     @Test
     @Transactional
     public void testCursor2() throws IOException {
-        try (Cursor<User> users = userDao.cursorQueryDepartmentAll()) {
+        try (Cursor<User> users = userDao.cursorDepartment()) {
             users.forEach(System.out::println);
         }
     }

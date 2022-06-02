@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserDao;
 
@@ -92,5 +93,23 @@ public class WrapperTest {
         wrapper.orderByAsc("id");
         List<User> list = userDao.selectList(wrapper);
         list.forEach(System.out::println);
+    }
+
+    /**
+     * 测试驼峰转换
+     * 新增事务后方法会公用一个sql session
+     */
+    @Test
+    @Transactional
+    public void test7() {
+        // 第一次查询
+        List<User> list = userDao.getDepartmentAll();
+        list.forEach(user -> user.setName("MoBai~~~~"));
+        // 第二次查询
+        List<User> list12 = userDao.getDepartmentAll();
+        list12.forEach(System.out::println);
+    }
+
+    public void test8() {
     }
 }

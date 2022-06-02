@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,4 +30,8 @@ public class User {
     private Integer version;
     @TableLogic
     private Integer deleted;
+    @TableField(exist = false)
+    private User child;
+    @TableField(exist = false)
+    private List<User> children;
 }
