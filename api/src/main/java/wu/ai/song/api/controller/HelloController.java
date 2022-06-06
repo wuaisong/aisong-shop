@@ -1,9 +1,13 @@
 package wu.ai.song.api.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wu.ai.song.api.entity.User;
+import wu.ai.song.api.mapper.UserDao;
 import wu.ai.song.util.ByteUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +30,9 @@ public class HelloController {
     @Value("${app.build.time}")
     private String appBuildTime;
 
+    @Autowired
+    private UserDao userDao;
+
     @GetMapping("/hello")
     public Object hello() {
         log.info("debug: hello~{}", springApplicationName);
@@ -42,5 +49,20 @@ public class HelloController {
         session.removeAttribute("userInfo");
         log.info(ofNullable(session.getAttribute("userInfo")).orElse("null").toString());
         return "ok";
+    }
+
+    @GetMapping("/testTranslate")
+    @Transactional(rollbackFor = Exception.class)
+    public void testTranslate(HttpServletRequest request) {
+        User user = new User();
+        user.setName("墨白君");
+        user.setAge(25);
+        user.setEmail("mobaijun8@163.com");
+        // mybatis-plus会自动帮助我们生成主键ID
+        int insert = userDao.insert(user);
+        // 被影响的行数
+        System.out.println("insert = " + insert);
+        // ID会自动回填
+        System.out.println("user = " + user);
     }
 }
