@@ -3,6 +3,7 @@ package wu.ai.song.api.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +51,20 @@ public class HelloController {
         log.info(ofNullable(session.getAttribute("userInfo")).orElse("null").toString());
         return "ok";
     }
+
+    /**
+     * 测试事务
+     * @param request
+     * @see org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration
+     * @see org.springframework.transaction.annotation.EnableTransactionManagement
+     * @see org.springframework.context.annotation.AutoProxyRegistrar
+     * @see ProxyTransactionManagementConfiguration
+     * @see org.springframework.aop.config.AopConfigUtils
+     * @see org.springframework.aop.framework.autoproxy.InfrastructureAdvisorAutoProxyCreator
+     * @see org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator
+     * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization(Object, String)
+     * @see org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization(Object, String)
+     */
 
     @GetMapping("/testTranslate")
     @Transactional(rollbackFor = Exception.class)
