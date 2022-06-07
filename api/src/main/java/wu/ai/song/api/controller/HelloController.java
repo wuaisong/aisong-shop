@@ -1,20 +1,18 @@
 package wu.ai.song.api.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.SqlSessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserDao;
-import wu.ai.song.util.ByteUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import java.nio.charset.StandardCharsets;
 
 import static java.util.Optional.ofNullable;
 
@@ -54,16 +52,21 @@ public class HelloController {
 
     /**
      * 测试事务
+     *
      * @param request
-     * @see org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration
-     * @see org.springframework.transaction.annotation.EnableTransactionManagement
+     * @see org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration 自动配置事务
+     * @see org.springframework.transaction.annotation.EnableTransactionManagement 开启事务
      * @see org.springframework.context.annotation.AutoProxyRegistrar
-     * @see ProxyTransactionManagementConfiguration
+     * @see org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration
      * @see org.springframework.aop.config.AopConfigUtils
      * @see org.springframework.aop.framework.autoproxy.InfrastructureAdvisorAutoProxyCreator
      * @see org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator
-     * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization(Object, String)
-     * @see org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization(Object, String)
+     * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization(java.lang.Object, java.lang.String)
+     * @see org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization(java.lang.Object, java.lang.String)
+     * @see com.baomidou.mybatisplus.core.override.MybatisMapperProxy#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+     * @see org.mybatis.spring.SqlSessionTemplate
+     * @see SqlSessionTemplate#SqlSessionTemplate(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)
+     * @see SqlSessionUtils#getSqlSession(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)
      */
 
     @GetMapping("/testTranslate")
