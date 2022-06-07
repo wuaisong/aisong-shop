@@ -1,16 +1,21 @@
 package wu.ai.song.api.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.SqlSessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserDao;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -31,6 +36,9 @@ public class HelloController {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     @GetMapping("/hello")
     public Object hello() {
@@ -72,6 +80,10 @@ public class HelloController {
     @GetMapping("/testTranslate")
     @Transactional(rollbackFor = Exception.class)
     public void testTranslate(HttpServletRequest request) {
+        doInsert();
+    }
+
+    private void doInsert() {
         User user = new User();
         user.setName("墨白君");
         user.setAge(25);
@@ -82,5 +94,19 @@ public class HelloController {
         System.out.println("insert = " + insert);
         // ID会自动回填
         System.out.println("user = " + user);
+    }
+
+
+    @GetMapping("/testTransactionTemplate")
+    public void testTransactionTemplate(HttpServletRequest request) {
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                doInsert();
+                doInsert();
+                doInsert();
+                doInsert();
+            }
+        });
     }
 }
