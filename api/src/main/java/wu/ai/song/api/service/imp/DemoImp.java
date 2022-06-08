@@ -25,8 +25,6 @@ public class DemoImp implements Demo {
 
     private final RedisUtil redisUtil;
 
-    private final RedissonClient redissonClient;
-
     @Override
     @Transactional
     public Result startTwoSeckil(long redPacketId, int userId) {
@@ -76,7 +74,8 @@ public class DemoImp implements Demo {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (res) {//释放锁
+            if (res) {
+                //释放锁
                 RedissLockUtil.unlock(redPacketId + "");
             }
         }
