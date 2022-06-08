@@ -11,13 +11,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserDao;
+import wu.ai.song.api.redis.RedisUtil;
+import wu.ai.song.api.service.Demo;
+import wu.ai.song.api.utils.DoubleUtil;
+import wu.ai.song.api.utils.Result;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
 
 import static java.util.Optional.ofNullable;
 
@@ -38,7 +47,17 @@ public class HelloController {
     private UserDao userDao;
 
     @Autowired
+    private Demo demo;
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
     private TransactionTemplate transactionTemplate;
+
+    @Autowired
+    private Executor executor;
+
 
     @GetMapping("/hello")
     public Object hello() {
@@ -108,5 +127,68 @@ public class HelloController {
                 doInsert();
             }
         });
+    }
+
+
+    /**
+     * 抢红包 拆红包 抢到不一定能拆到
+     *
+     * @param redPacketId
+     * @return
+     */
+    @GetMapping("/startTwo")
+    public void startTwo(@RequestParam("redPacketId") long redPacketId) {
+        int skillNum = 100;
+        /**
+         * N个抢红包
+         */
+        final CountDownLatch latch = new CountDownLatch(skillNum);
+        /**
+         * 初始化红包数据，抢红包拦截
+         */
+        redisUtil.set(redPacketId + "-num", "1000");
+        /**
+         * 初始化红包金额，单位为分
+         */
+        redisUtil.set(redPacketId + "-money", "200000000");
+        /**
+         * 模拟100个用户抢10个红包
+         */
+        for (int i = 1; i <= skillNum; i++) {
+            int userId = i;
+            Runnable task = () -> {
+                /**
+                 * 抢红包 判断剩余金额
+                 */
+                Integer money = Integer.parseInt(redisUtil.get(redPacketId + "-money"));
+                if (money > 0) {
+                    /**
+                     * 虽然能抢到 但是不一定能拆到
+                     * 类似于微信的 点击红包显示抢的按钮
+                     */
+                    Result result = demo.startTwoSeckil(redPacketId, userId);
+                    if (result.getCode().toString().equals("500")) {
+                        log.info("用户{}手慢了，红包派完了", userId);
+                    } else {
+                        Double amount = DoubleUtil.div(Double.parseDouble(result.getMessage()), (double) 100);
+                        log.info("用户{}抢红包成功，金额：{}", userId, amount);
+                    }
+                } else {
+                    /**
+                     * 直接显示手慢了，红包派完了
+                     */
+                    log.info("用户{}手慢了，红包派完了", userId);
+                }
+                latch.countDown();
+            };
+            executor.execute(task);
+        }
+        try {
+            latch.await();
+            Integer restMoney = Integer.parseInt(redisUtil.get(redPacketId + "-money").toString());
+            log.info("剩余金额：{}", restMoney);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
