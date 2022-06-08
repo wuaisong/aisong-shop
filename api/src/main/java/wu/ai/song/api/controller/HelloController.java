@@ -25,6 +25,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 
@@ -60,7 +63,14 @@ public class HelloController {
 
 
     @GetMapping("/hello")
-    public Object hello() {
+    public Object hello() throws NoSuchAlgorithmException {
+
+
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        md5.update("wuyaming".getBytes(StandardCharsets.UTF_8));
+        byte[] digest = md5.digest();
+
+
         log.info("debug: hello~{}", springApplicationName);
         log.info("debug: hello~{}", appBuildTime);
         return "Hello World~";
