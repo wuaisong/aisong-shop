@@ -39,6 +39,9 @@ public interface UserDao extends BaseMapper<User> {
      *
      * @return
      */
+
+    // @Options(resultSetType = ResultSetType.FORWARD_ONLY, fetchSize = Integer.MIN_VALUE)
+    // @Select("select * from user")
     Cursor<User> cursorDepartment();
 
 }

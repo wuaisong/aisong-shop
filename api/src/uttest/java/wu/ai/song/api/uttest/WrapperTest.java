@@ -1,9 +1,11 @@
 package wu.ai.song.api.uttest;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.ibatis.cursor.Cursor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserDao;
@@ -117,6 +119,10 @@ public class WrapperTest {
         list12.forEach(System.out::println);
     }
 
+    @Test
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void test8() {
+        Cursor<User> users = userDao.cursorDepartment();
+        users.forEach(user -> user.setName("MoBai~~~~"));
     }
 }

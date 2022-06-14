@@ -52,8 +52,7 @@
         select *
         from user
     </select>
-    <select id="cursorDepartment" resultType="wu.ai.song.api.entity.User" resultSetType="FORWARD_ONLY" fetchSize="3">
-        select *
-        from user
+    <select id="cursorDepartment" resultType="wu.ai.song.api.entity.User" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
+        select * from user
     </select>
 </mapper>

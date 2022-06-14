@@ -2,6 +2,7 @@ package wu.ai.song.api.uttest;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.cursor.Cursor;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,11 +14,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import wu.ai.song.api.entity.User;
+import wu.ai.song.api.mapper.UserComponent;
 import wu.ai.song.api.mapper.UserDao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -37,6 +41,9 @@ class ApiApplicationTests {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private UserComponent userComponent;
+
 
     /**
      * .perform() : 执行一个MockMvcRequestBuilders的请求；MockMvcRequestBuilders有.get()、.post()、.put()、.delete()等请求。
@@ -54,18 +61,30 @@ class ApiApplicationTests {
      */
     @Test
     public void testInsert() {
-        IntStream.range(0, 1000).forEach(i -> {
-            User user = new User();
-            user.setName("墨白君");
-            user.setAge(25);
-            user.setEmail("mobaijun8@163.com");
-            // mybatis-plus会自动帮助我们生成主键ID
-            int insert = userDao.insert(user);
-            // 被影响的行数
-            System.out.println("insert = " + insert);
-            // ID会自动回填
-            System.out.println("user = " + user);
-        });
+
+
+        User user = new User();
+        user.setName("墨白君");
+        user.setAge(25);
+        user.setEmail("mobaijun8@163.com");
+            ArrayList<User> objects = Lists.newArrayList();
+            IntStream.range(0, 1000).forEach(i -> {
+                objects.add(user);
+            });
+            userComponent.saveBatch(objects);
+
+        // IntStream.range(0, 1000).forEach(i -> {
+        //     User user = new User();
+        //     user.setName("墨白君");
+        //     user.setAge(25);
+        //     user.setEmail("mobaijun8@163.com");
+        //     // mybatis-plus会自动帮助我们生成主键ID
+        //     int insert = userDao.insert(user);
+        //     // 被影响的行数
+        //     System.out.println("insert = " + insert);
+        //     // ID会自动回填
+        //     System.out.println("user = " + user);
+        // });
 
     }
 
@@ -215,9 +234,26 @@ class ApiApplicationTests {
     @Test
     @Transactional
     public void testCursor2() throws IOException {
-        try (Cursor<User> users = userDao.cursorDepartment()) {
-            users.forEach(System.out::println);
+        try (Cursor<User> cursor = userDao.cursorDepartment()) {
+            Iterator<User> iterator = cursor.iterator();
+            int batchSize = 10;
+            int page = 0;
+            List<User> data = new ArrayList<>();
+            while (iterator.hasNext()) {
+                data.add(iterator.next());
+                if (data.size() % batchSize == 0 || !iterator.hasNext()) {
+                    int current = cursor.getCurrentIndex() + 1;
+                    page = (current / batchSize) + 1;
+                    print(data, page);
+                    data.clear();
+                }
+            }
+            System.out.println("总页数: " + page);
         }
+    }
+
+    private void print(List<User> users, Integer page) {
+        System.out.println(page + "-----" + users.stream().findFirst().get());
     }
 
 }
