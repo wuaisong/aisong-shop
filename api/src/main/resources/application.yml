@@ -1,7 +1,7 @@
 # MySQL8配置
 spring:
   datasource:
-    url: jdbc:p6spy:mysql://114.115.222.81:3307/aisong?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:p6spy:mysql://114.115.222.81:3307/aisong?useUnicode=true&useSSL=false&characterEncoding=UTF-8&characterSetResults=UTF-8&autoReconnect=true&serverTimezone=GMT%2B8&allowMultiQueries=true&rewriteBatchedStatements=true&multiStatementAllow=true
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     username: root
     password: wuyaming

@@ -61,14 +61,12 @@ class ApiApplicationTests {
      */
     @Test
     public void testInsert() {
-
-
-        User user = new User();
-        user.setName("墨白君");
-        user.setAge(25);
-        user.setEmail("mobaijun8@163.com");
             ArrayList<User> objects = Lists.newArrayList();
             IntStream.range(0, 1000).forEach(i -> {
+                User user = new User();
+                user.setName("墨白君");
+                user.setAge(25);
+                user.setEmail("mobaijun8@163.com");
                 objects.add(user);
             });
             userComponent.saveBatch(objects);
@@ -169,7 +167,7 @@ class ApiApplicationTests {
          * 参数一: 页大小
          * 使用了分页插件以后,所有的分页操作也变得非常简单
          */
-        Page<User> page = new Page<>(2, 4);
+        Page<User> page = new Page<>(0, 4);
         // 调用selectPage进行分页
         userDao.selectPage(page, null);
         page.getRecords().forEach(System.out::println);
