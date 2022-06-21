@@ -42,13 +42,13 @@ public class MyBatisPlusConfig {
         return new PaginationInterceptor();
     }
 
-    @Bean
-    public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(DataSource dataSource) {
-        MybatisSqlSessionFactoryBean sessionFactoryBean = new MybatisSqlSessionFactoryBean();
-        sessionFactoryBean.setDataSource(dataSource);
-        sessionFactoryBean.setMapperLocations(resolveMapperLocations());
-        return sessionFactoryBean;
-    }
+    // @Bean
+    // public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(DataSource dataSource) {
+    //     MybatisSqlSessionFactoryBean sessionFactoryBean = new MybatisSqlSessionFactoryBean();
+    //     sessionFactoryBean.setDataSource(dataSource);
+    //     sessionFactoryBean.setMapperLocations(resolveMapperLocations());
+    //     return sessionFactoryBean;
+    // }
 
     public Resource[] resolveMapperLocations() {
         ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
