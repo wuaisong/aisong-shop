@@ -62,7 +62,7 @@ class ApiApplicationTests {
     @Test
     public void testInsert() {
             ArrayList<User> objects = Lists.newArrayList();
-            IntStream.range(0, 1000).forEach(i -> {
+            IntStream.range(0, 10).forEach(i -> {
                 User user = new User();
                 user.setName("墨白君");
                 user.setAge(25);
