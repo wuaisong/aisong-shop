@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -64,9 +66,9 @@ class ApiApplicationTests {
             ArrayList<User> objects = Lists.newArrayList();
             IntStream.range(0, 10).forEach(i -> {
                 User user = new User();
-                user.setName("墨白君");
-                user.setAge(25);
-                user.setEmail("mobaijun8@163.com");
+                user.setName(UUID.randomUUID().toString());
+                user.setAge(new Random().nextInt());
+                user.setEmail(UUID.randomUUID().toString());
                 objects.add(user);
             });
             userComponent.saveBatch(objects);
@@ -167,7 +169,7 @@ class ApiApplicationTests {
          * 参数一: 页大小
          * 使用了分页插件以后,所有的分页操作也变得非常简单
          */
-        Page<User> page = new Page<>(0, 4);
+        Page<User> page = new Page<>(2, 4);
         // 调用selectPage进行分页
         userDao.selectPage(page, null);
         page.getRecords().forEach(System.out::println);
