@@ -22,68 +22,68 @@
         <profile>ut</profile>
         <revision>2.34-SNAPSHOT</revision>
         <lombok-version>1.18.22</lombok-version>
-        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.deploy.skip>false</maven.deploy.skip>
     </properties>
 
-    <repositories>
-        <!--<repository>-->
-        <!--    <id>local-repo</id>-->
-        <!--    <url>http://127.0.0.1:9001/repository/my-common/</url>-->
-        <!--    <snapshots>-->
-        <!--        <enabled>false</enabled>-->
-        <!--    </snapshots>-->
-        <!--</repository>-->
-        <!--<repository>-->
-        <!--    <id>local-snapshots</id>-->
-        <!--    <url>http://127.0.0.1:9001/repository/my-snapshots/</url>-->
-        <!--    <snapshots>-->
-        <!--        <enabled>true</enabled>-->
-        <!--        <updatePolicy>always</updatePolicy>-->
-        <!--    </snapshots>-->
-        <!--</repository>-->
-        <repository>
-            <id>spring-releases</id>
-            <url>http://repo.spring.io/libs-release/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <!--<pluginRepository>-->
-        <!--    <id>local-repo</id>-->
-        <!--    <url>http://127.0.0.1:9001/repository/my-common/</url>-->
-        <!--</pluginRepository>-->
-        <pluginRepository>
-            <id>spring-releases</id>
-            <url>http://repo.spring.io/libs-release</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+    <!--<repositories>-->
+    <!--<repository>-->
+    <!--    <id>local-repo</id>-->
+    <!--    <url>http://127.0.0.1:9001/repository/my-common/</url>-->
+    <!--    <snapshots>-->
+    <!--        <enabled>false</enabled>-->
+    <!--    </snapshots>-->
+    <!--</repository>-->
+    <!--<repository>-->
+    <!--    <id>local-snapshots</id>-->
+    <!--    <url>http://127.0.0.1:9001/repository/my-snapshots/</url>-->
+    <!--    <snapshots>-->
+    <!--        <enabled>true</enabled>-->
+    <!--        <updatePolicy>always</updatePolicy>-->
+    <!--    </snapshots>-->
+    <!--</repository>-->
+    <!--    <repository>-->
+    <!--        <id>spring-releases</id>-->
+    <!--        <url>http://repo.spring.io/libs-release/</url>-->
+    <!--        <snapshots>-->
+    <!--            <enabled>false</enabled>-->
+    <!--        </snapshots>-->
+    <!--    </repository>-->
+    <!--    <repository>-->
+    <!--        <id>public</id>-->
+    <!--        <name>aliyun nexus</name>-->
+    <!--        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
+    <!--        <releases>-->
+    <!--            <enabled>true</enabled>-->
+    <!--        </releases>-->
+    <!--    </repository>-->
+    <!--</repositories>-->
+    <!--<pluginRepositories>-->
+    <!--<pluginRepository>-->
+    <!--    <id>local-repo</id>-->
+    <!--    <url>http://127.0.0.1:9001/repository/my-common/</url>-->
+    <!--</pluginRepository>-->
+    <!--    <pluginRepository>-->
+    <!--        <id>spring-releases</id>-->
+    <!--        <url>http://repo.spring.io/libs-release</url>-->
+    <!--        <releases>-->
+    <!--            <enabled>true</enabled>-->
+    <!--        </releases>-->
+    <!--        <snapshots>-->
+    <!--            <enabled>false</enabled>-->
+    <!--        </snapshots>-->
+    <!--    </pluginRepository>-->
+    <!--    <pluginRepository>-->
+    <!--        <id>public</id>-->
+    <!--        <name>aliyun nexus</name>-->
+    <!--        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
+    <!--        <releases>-->
+    <!--            <enabled>true</enabled>-->
+    <!--        </releases>-->
+    <!--        <snapshots>-->
+    <!--            <enabled>false</enabled>-->
+    <!--        </snapshots>-->
+    <!--    </pluginRepository>-->
+    <!--</pluginRepositories>-->
 
     <!--加这个才会有root-->
     <modules>
@@ -204,7 +204,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.22.2</version>
                     <configuration>
-                        <skipTests>false</skipTests>
+                        <skipTests>true</skipTests>
                         <includes>
                             <include>**/uttest/**.java</include>
                         </includes>
@@ -218,34 +218,37 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>2.22.2</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <configuration>
-                    <!--配置基本镜像-->
-                    <from>
-                        <image>openjdk:8-jdk-alpine</image>
-                    </from>
-                    <!--配置最终推送的地址，仓库名，镜像名-->
-                    <to>
-                        <image>127.0.0.1:9009/myproject/test</image>
-                    </to>
-                </configuration>
-                <!--绑定到maven lifecicle-->
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+            <!--    <groupId>com.google.cloud.tools</groupId>-->
+            <!--    <artifactId>jib-maven-plugin</artifactId>-->
+            <!--    <version>1.6.0</version>-->
+            <!--    <configuration>-->
+            <!--        &lt;!&ndash;配置基本镜像&ndash;&gt;-->
+            <!--        <from>-->
+            <!--            <image>openjdk:8-jdk-alpine</image>-->
+            <!--        </from>-->
+            <!--        &lt;!&ndash;配置最终推送的地址，仓库名，镜像名&ndash;&gt;-->
+            <!--        <to>-->
+            <!--            <image>127.0.0.1:9009/myproject/test</image>-->
+            <!--        </to>-->
+            <!--    </configuration>-->
+            <!--    &lt;!&ndash;绑定到maven lifecicle&ndash;&gt;-->
+            <!--    <executions>-->
+            <!--        <execution>-->
+            <!--            <phase>package</phase>-->
+            <!--            <goals>-->
+            <!--                <goal>build</goal>-->
+            <!--            </goals>-->
+            <!--        </execution>-->
+            <!--    </executions>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
@@ -329,24 +332,24 @@
 
 
     <!-- 组件发布仓库地址 -->
-    <distributionManagement>
-        <snapshotRepository>
-            <id>nexus.snapshot</id>
-            <url>http://127.0.0.1:9001/repository/maven-snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>nexus.release</id>
-            <url>http://127.0.0.1:9001/repository/maven-releases/</url>
-        </repository>
-    </distributionManagement>
-    <profiles>
-        <profile>
-            <id>native</id>
-            <properties>
-                <exclude-dependencies-group-ids>
-                    org.projectlombok
-                </exclude-dependencies-group-ids>
-            </properties>
-        </profile>
-    </profiles>
+    <!--<distributionManagement>-->
+    <!--    <snapshotRepository>-->
+    <!--        <id>nexus.snapshot</id>-->
+    <!--        <url>http://127.0.0.1:9001/repository/maven-snapshots/</url>-->
+    <!--    </snapshotRepository>-->
+    <!--    <repository>-->
+    <!--        <id>nexus.release</id>-->
+    <!--        <url>http://127.0.0.1:9001/repository/maven-releases/</url>-->
+    <!--    </repository>-->
+    <!--</distributionManagement>-->
+    <!--<profiles>-->
+    <!--    <profile>-->
+    <!--        <id>native</id>-->
+    <!--        <properties>-->
+    <!--            <exclude-dependencies-group-ids>-->
+    <!--                org.projectlombok-->
+    <!--            </exclude-dependencies-group-ids>-->
+    <!--        </properties>-->
+    <!--    </profile>-->
+    <!--</profiles>-->
 </project>
