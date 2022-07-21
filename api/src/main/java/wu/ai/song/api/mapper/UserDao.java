@@ -7,6 +7,7 @@ import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.mapping.ResultSetType;
 import org.springframework.stereotype.Repository;
 import wu.ai.song.api.entity.User;
+import wu.ai.song.api.utils.BatchMapper;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * BaseMapper类描述： Mapper继承该接口后，无需编写 mapper.xml 文件，即可获得CRUD功能
  */
 @Repository
-public interface UserDao extends BaseMapper<User> {
+public interface UserDao extends BatchMapper<User> {
     /**
      * 查询所有
      *

@@ -63,15 +63,45 @@ class ApiApplicationTests {
      */
     @Test
     public void testInsert() {
-            ArrayList<User> objects = Lists.newArrayList();
-            IntStream.range(0, 10).forEach(i -> {
-                User user = new User();
-                user.setName(UUID.randomUUID().toString());
-                user.setAge(new Random().nextInt());
-                user.setEmail(UUID.randomUUID().toString());
-                objects.add(user);
-            });
-            userComponent.saveBatch(objects);
+        ArrayList<User> objects = Lists.newArrayList();
+        IntStream.range(0, 10).forEach(i -> {
+            User user = new User();
+            user.setName(UUID.randomUUID().toString());
+            user.setAge(new Random().nextInt());
+            user.setEmail(UUID.randomUUID().toString());
+            objects.add(user);
+        });
+        userComponent.saveBatch(objects);
+
+        // IntStream.range(0, 1000).forEach(i -> {
+        //     User user = new User();
+        //     user.setName("墨白君");
+        //     user.setAge(25);
+        //     user.setEmail("mobaijun8@163.com");
+        //     // mybatis-plus会自动帮助我们生成主键ID
+        //     int insert = userDao.insert(user);
+        //     // 被影响的行数
+        //     System.out.println("insert = " + insert);
+        //     // ID会自动回填
+        //     System.out.println("user = " + user);
+        // });
+
+    }
+
+    /**
+     * 批量写入
+     */
+    @Test
+    public void testBatchInsert() {
+        ArrayList<User> objects = Lists.newArrayList();
+        IntStream.range(0, 10).forEach(i -> {
+            User user = new User();
+            user.setName(UUID.randomUUID().toString());
+            user.setAge(new Random().nextInt());
+            user.setEmail(UUID.randomUUID().toString());
+            objects.add(user);
+        });
+        userDao.insertBatchSomeColumn(objects);
 
         // IntStream.range(0, 1000).forEach(i -> {
         //     User user = new User();

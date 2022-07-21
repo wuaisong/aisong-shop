@@ -1,11 +1,16 @@
 DROP TABLE IF EXISTS user;
-CREATE TABLE USER
+create table user
 (
-    id    BIGINT(20)  NOT NULL COMMENT '主键ID',
-    NAME  VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
-    age   INT(11)     NULL DEFAULT NULL COMMENT '年龄',
-    email VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱',
-    PRIMARY KEY (id)
+    id           bigint                             not null comment '主键ID'
+        primary key,
+    name         varchar(300)                       null comment '姓名',
+    age          int                                null comment '年龄',
+    email        varchar(500)                       null comment '邮箱',
+    gmt_create   datetime default CURRENT_TIMESTAMP null,
+    gmt_update   datetime default CURRENT_TIMESTAMP null,
+    version      int      default 0                 null,
+    deleted      int      default 0                 null,
+    gmt_modified datetime default CURRENT_TIMESTAMP null
 );
 DELETE
 FROM user;

@@ -68,4 +68,10 @@ public class MyBatisPlusConfig {
         return resources.toArray(new Resource[resources.size()]);
     }
 
+    @Bean
+    public EasySqlInjector easySqlInjector() {
+        return new EasySqlInjector();
+    }
+
+
 }
