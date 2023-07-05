@@ -12,9 +12,11 @@
 import {useStore} from 'vuex' // 引入useStore 方法
 import {nextTick} from 'vue'
 const store = useStore()  // 该方法用于返回store 实例
+let data;
 console.log(store)  // store 实例对象
 const increment = () => {
   store.commit("increment")
+  console.log(data)
 }
 const getCount = () => {
   return store.state.count
