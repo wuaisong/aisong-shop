@@ -3,6 +3,8 @@ import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import {createStore} from "vuex";
+import router from './router/index.js';
+
 
 const store = createStore({
     state() {
@@ -17,4 +19,4 @@ const store = createStore({
     }
 })
 
-createApp(App).use(ElementPlus).use(store).mount('#app');
+createApp(App).use(ElementPlus).use(router).use(store).mount('#app');
