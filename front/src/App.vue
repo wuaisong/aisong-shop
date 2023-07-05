@@ -1,28 +1,28 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header>
-        <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-          <el-tab-pane label="User" name="first">
-            <router-link to="/first"></router-link>
-          </el-tab-pane>
-          <el-tab-pane label="Config" name="second">
-            <router-link to="/second"></router-link>
-          </el-tab-pane>
-        </el-tabs>
-      </el-header>
       <el-main>
+        <router-link to="/second">页面一</router-link>
+        <router-link to="/first">页面二</router-link>
         <router-view></router-view>
       </el-main>
     </el-container>
   </div>
 </template>
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
+import {useRoute, useRouter} from "vue-router";
 import type {TabsPaneContext} from 'element-plus'
 
-const activeName = ref('first')
+const route = useRoute()
+const router = useRouter()
 
+const activeName = ref('first')
+watch(activeName, (newVal, oldVal) => {
+  console.log(`New: ${newVal}, Old: ${oldVal}`)
+  console.log(`${route.path}?tab=${newVal}`)
+  router.push(`${route.path}?tab=${newVal}`)
+})
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event)
 }
