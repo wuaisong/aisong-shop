@@ -31,20 +31,25 @@ nextTick(() => {
   var map = new window.BMap.Map("myMap");
   map.centerAndZoom(new BMap.Point(116.404, 39.915), 5);
   map.enableScrollWheelZoom();
-  var MAX = 20;
+  var MAX = 10;
   var markers = [];
   var pt = null;
   var i = 0;
   for (; i < MAX; i++) {
     var b = Math.random() < 0.1;
     const myIcon = new BMap.Icon(!b ? carBlue : carRed, new BMap.Size(150, 150));
-    pt = new BMap.Point(Math.random() * 40 + 85, Math.random() * 30 + 21);
+    pt = new BMap.Point(Math.random() * 10 + 115, Math.random() * 9 + 25);
     var marker = new BMap.Marker(pt, {icon: myIcon});
     marker.needRed = b
     markers.push(marker);
   }
   //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-  var markerClusterer = new BMapLib.MarkerClusterer(map, {markers: markers});
+  var markerClusterer = new BMapLib.MarkerClusterer(map, {
+    markers,
+    minClusterSize: 2,
+    maxZoom: 15,
+    isAverangeCenter: true
+  });
   console.log(markerClusterer)
 })
 </script>

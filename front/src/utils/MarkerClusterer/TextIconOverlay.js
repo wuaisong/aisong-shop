@@ -832,7 +832,8 @@ var BMapLib = window.BMapLib = BMapLib || {};
         styles[0].size.height = 36
         if (this._nodeList) {
             console.log(this._nodeList)
-            if (this._nodeList.reduce((o1, o2) => o1.needRed || o2.needRed)) return styles[2]
+            const flag = this._nodeList.reduce((o1, o2) => o1 || o2.needRed, false)
+            if (flag) return styles[2]
         }
         return styles[0];
     }
