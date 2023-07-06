@@ -822,15 +822,16 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *@return {Number} 对应的索引值。
      */
     TextIconOverlay.prototype.getStyleByText = function (_text, styles) {
-        styles[2].url = './src/red.png'
+        styles[2].url = './src/assets/red.png'
         styles[2].textColor = 'red'
-        styles[0].url = './src/blue.png'
+        styles[0].url = './src/assets/blue.png'
         styles[0].textColor = 'green'
         styles[2].size.width = 36
         styles[2].size.height = 36
         styles[0].size.width = 36
         styles[0].size.height = 36
         if (this._nodeList) {
+            console.log(this._nodeList)
             if (this._nodeList.reduce((o1, o2) => o1.needRed || o2.needRed)) return styles[2]
         }
         return styles[0];

@@ -11,6 +11,11 @@
 <script setup>
 import {nextTick} from 'vue'
 import {useCounterStore} from '@/stores/counter'
+
+import carBlue from '@/assets/car_blue.png'
+import carRed from '@/assets/car_red.png'
+
+
 // 可以在组件中的任意位置访问 `store` 变量 ✨
 const store = useCounterStore()
 console.log(store)  // store 实例对象
@@ -32,7 +37,7 @@ nextTick(() => {
   var i = 0;
   for (; i < MAX; i++) {
     var b = Math.random() < 0.1;
-    const myIcon = new BMap.Icon(!b ? './src/car_blue.png' : './src/car_red.png', new BMap.Size(150, 150));
+    const myIcon = new BMap.Icon(!b ? carBlue : carRed, new BMap.Size(150, 150));
     pt = new BMap.Point(Math.random() * 40 + 85, Math.random() * 30 + 21);
     var marker = new BMap.Marker(pt, {icon: myIcon});
     marker.needRed = b
