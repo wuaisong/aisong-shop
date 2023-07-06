@@ -1,25 +1,25 @@
 <template>
   <div class="container">
     <div style="position: absolute;z-index:1;margin: 10px;">
-      <span class="demonstration">评价：</span>
-      <el-rate v-model="data"/>
+      <span class="demonstration">评价：{{ store.double }}-{{ store.count }}</span>
+
       <el-button type="primary" @click="increment">{{ getCount() }}</el-button>
     </div>
     <div class="container" id="myMap"></div>
   </div>
 </template>
 <script setup>
-import {useStore} from 'vuex' // 引入useStore 方法
 import {nextTick} from 'vue'
-const store = useStore()  // 该方法用于返回store 实例
-let data;
+import {useCounterStore} from '@/stores/counter'
+// 可以在组件中的任意位置访问 `store` 变量 ✨
+const store = useCounterStore()
 console.log(store)  // store 实例对象
 const increment = () => {
-  store.commit("increment")
-  console.log(data)
+  store.increment()
+  store.double()
 }
 const getCount = () => {
-  return store.state.count
+  return store.count
 }
 nextTick(() => {
   // 百度地图API功能
