@@ -15,6 +15,12 @@ import {useCounterStore} from '@/stores/counter'
 import carBlue from '@/assets/car_blue.png'
 import carRed from '@/assets/car_red.png'
 
+const obj = {};
+console.log(obj?.a?.b ?? 233 ) //233
+const obj = {a: {b: 1}};
+console.log(obj?.a?.b??233) //1
+
+
 
 // 可以在组件中的任意位置访问 `store` 变量 ✨
 const store = useCounterStore()
