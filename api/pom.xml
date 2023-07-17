@@ -119,98 +119,67 @@
         </dependency>
     </dependencies>
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>add-test-source</id>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>add-test-source</goal>
-                            </goals>
-                            <configuration>
-                                <sources>
-                                    <source>${basedir}/src/uttest/java</source>
-                                </sources>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>add-integration-test-sources</id>
-                            <phase>generate-test-sources</phase>
-                            <goals>
-                                <goal>add-test-source</goal>
-                            </goals>
-                            <configuration>
-                                <!-- Configures the source directory of our integration tests -->
-                                <sources>
-                                    <source>${basedir}/src/ittest/java</source>
-                                </sources>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <!--配置启动类-->
-                    <mainClass>wu.ai.song.api.ApiApplication</mainClass>
-                    <excludeGroupIds>${exclude-dependencies-group-ids}</excludeGroupIds>
-                    <!--本地不执行springboot打包-->
-                    <!--<skip>true</skip>-->
+                    <skipTests>${skipUnitTest}</skipTests>
+                    <includes>
+                        <include>**/*UT.java</include>
+                    </includes>
+
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                            <goal>build-info</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
-            <!--转移打包文件的位置-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <inherited>true</inherited>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <copy todir="${project.basedir}/../target" overwrite="true">
-                                    <fileset dir="${project.build.directory}">
-                                        <include name="*.jar"/>
-                                    </fileset>
-                                </copy>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <skipITs>${skipIntTest}</skipITs>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
+                </configuration>
             </plugin>
+
         </plugins>
-        <testResources>
-            <testResource>
-                <directory>src/ittest/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>src/uttest/resources</directory>
-            </testResource>
-        </testResources>
     </build>
-
-
+    <profiles>
+        <!-- 定义不同情景的变量，用于命令行控制执行不同的测试 -->
+        <!-- mvn clean install -P skipTests：跳过所有的测试-->
+        <profile>
+            <id>skipTests</id>
+            <properties>
+                <skipIntTest>true</skipIntTest>
+                <skipUnitTest>true</skipUnitTest>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <!-- mvn clean install -P unit：只执行单元测试 -->
+        <profile>
+            <id>unit</id>
+            <properties>
+                <skipIntTest>true</skipIntTest>
+                <skipUnitTest>false</skipUnitTest>
+            </properties>
+        </profile>
+        <!-- mvn clean install -P int：只执行集成测试 -->
+        <profile>
+            <id>int</id>
+            <properties>
+                <skipIntTest>false</skipIntTest>
+                <skipUnitTest>true</skipUnitTest>
+            </properties>
+        </profile>
+        <!-- mvn clean install -P tests：执行所有的测试（单元测试 + 集成测试） -->
+        <profile>
+            <id>tests</id>
+            <properties>
+                <skipIntTest>false</skipIntTest>
+                <skipUnitTest>false</skipUnitTest>
+            </properties>
+        </profile>
+    </profiles>
 </project>
