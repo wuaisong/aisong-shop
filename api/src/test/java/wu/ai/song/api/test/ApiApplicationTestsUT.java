@@ -12,9 +12,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import wu.ai.song.api.entity.SysUser;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserComponent;
 import wu.ai.song.api.mapper.UserDao;
+import wu.ai.song.api.mapper.UserMapper;
 
 import java.io.IOException;
 import java.util.*;
@@ -33,11 +35,24 @@ class ApiApplicationTestsUT {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserDao userDao;
+
 
     @Autowired
+    private UserDao userDao;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
     private UserComponent userComponent;
+
+    /**
+     * 条件查询
+     */
+    @Test
+    public void testMysql() {
+        List<SysUser> users = userMapper.findUsers(1);
+        System.out.println("users = " + users.size());
+
+    }
 
     /**
      * 条件查询

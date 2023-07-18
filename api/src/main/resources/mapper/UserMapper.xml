@@ -1,58 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="wu.ai.song.api.mapper.UserDao">
-    <resultMap id="UserResultMap" type="wu.ai.song.api.entity.User">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="age" column="age"/>
-        <result property="email" column="email"/>
-        <result property="version" column="version"/>
-        <result property="deleted" column="deleted"/>
-        <association property="child" javaType="wu.ai.song.api.entity.User">
-            <result property="gmtCreate" column="child_gmt_create"/>
-        </association>
-        <collection property="children" ofType="wu.ai.song.api.entity.User">
-            <id property="id" column="children_id"></id>
+<mapper namespace="wu.ai.song.api.mapper.UserMapper">
+    <resultMap id="SysUserMap" type="wu.ai.song.api.entity.SysUser">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="login_name" property="loginName" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <!-- userId 和 roleStatus 为查询 findRoleById 的入参, id 和 role_status 为查询 findUsers 的结果信息 -->
+        <!-- 如果查询 findRoleById 需要 roleId 作为入参, column 写法 {userId=id,roleStatus=role_status,roleId=role_id} -->
+        <collection property="roles" ofType="wu.ai.song.api.entity.SysRole" select="findRoleById"
+                    column="{userId=id,roleStatus=role_status}"/>
+        <collection property="roleIds" ofType="Long">
+            <constructor>
+                <arg column="role_id"/>
+            </constructor>
         </collection>
     </resultMap>
-    <sql id="selectSql">
-        user.id, user.name, user.age, user.email, user.version, user.deleted, user.gmt_create
-    </sql>
 
-    <select id="getDepartmentAll" resultMap="UserResultMap" flushCache="true">
-        select <include refid="selectSql"></include>, user.gmt_create child_gmt_create, temp.id children_id
-        from user user
-        cross join user temp
-        <!--<if test="username != null and username != ''">username = #{username}</if>-->
-        <!--<where>-->
-        <!--    <if test="id != null">-->
-        <!--        id = #{id}-->
-        <!--    </if>-->
-        <!--</where>-->
-        <!--<set>-->
-        <!--    <if test="name != null">-->
-        <!--        name = #{name} ,-->
-        <!--    </if>-->
-        <!--</set>-->
-        <!--<trim prefix="WHERE" prefixOverrides="AND | OR ">-->
-        <!--    <if test="id != null">-->
-        <!--        and id = #{id}-->
-        <!--    </if>-->
-        <!--</trim>-->
-        <!--<trim prefix="SET" suffixOverrides=",">-->
-        <!--    <if test="name != null">-->
-        <!--        name = #{name} ,-->
-        <!--    </if>-->
-        <!--</trim>-->
-        <!--<foreach collection="list" item="id" open="(" close=")" separator=",">-->
-        <!--    #{id}-->
-        <!--</foreach>-->
+    <resultMap id="SysRoleMap" type="wu.ai.song.api.entity.SysRole">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="descripton" property="roleDesc" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 查询 findUsers 的入参 #{status} 放在结果集上作为查询 findRoleById 作为入参 -->
+    <select id="findUsers" parameterType="Integer" resultMap="SysUserMap">
+        SELECT su.id, su.login_name, su.user_name, su.email, sur.id as role_id, #{status} AS role_status
+        FROM ai_user su
+                 LEFT JOIN ai_user_role sur ON sur.user_id = su.id
     </select>
-    <select id="queryDepartmentAll" resultType="wu.ai.song.api.entity.User" resultSetType="FORWARD_ONLY" fetchSize="3">
-        select *
-        from user
-    </select>
-    <select id="cursorDepartment" resultType="wu.ai.song.api.entity.User" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
-        select * from user
+
+
+    <select id="findRoleById" resultType="wu.ai.song.api.entity.SysRole">
+        SELECT id, role_name, role_descript AS role_desc
+        FROM ai_user_role
+        WHERE user_id = #{userId}
+          AND role_status = #{roleStatus}
     </select>
 </mapper>
