@@ -3,15 +3,17 @@ package wu.ai.song.api.test;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.cursor.Cursor;
+import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import wu.ai.song.api.ApiApplication;
 import wu.ai.song.api.entity.SysUser;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserComponent;
@@ -22,21 +24,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.IntStream;
 
-@SpringBootTest
+@SpringBootTest(classes = ApiApplication.class)
 //不启动服务器,使用mockMvc进行测试http请求。启动了完整的Spring应用程序上下文，但没有启动服务器
 @AutoConfigureMockMvc
 @ActiveProfiles("ut")
 class ApiApplicationTestsUT {
-
-    @Test
-    void contextLoads() {
-    }
-
-    @Autowired
-    private MockMvc mockMvc;
-
-
-
     @Autowired
     private UserDao userDao;
     @Autowired
@@ -50,6 +42,7 @@ class ApiApplicationTestsUT {
     @Test
     public void testMysql() {
         List<SysUser> users = userMapper.findUsers(1);
+        Assertions.assertThat(users).isNotNull();
         System.out.println("users = " + users.size());
 
     }
@@ -66,6 +59,10 @@ class ApiApplicationTestsUT {
         userDao.selectList(wrapper).forEach(System.out::println);
     }
 
+    @Test
+    public void testSayHi() {
+        System.out.println("Hi Junit.");
+    }
 
     /**
      * 根据名称查询
@@ -174,6 +171,8 @@ class ApiApplicationTestsUT {
      * 添加数据
      */
     @Test
+    @Rollback
+    @Transactional
     public void testInsert() {
         ArrayList<User> objects = Lists.newArrayList();
         IntStream.range(0, 10).forEach(i -> {
