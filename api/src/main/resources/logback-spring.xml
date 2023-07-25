@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 从高到低：OFF，FATAL，ERROR，WARN，INFO，DEBUG，TRACE，ALL -->
+<!-- 日志输出规则：输出比当前ROOT级别高的日志，另外亦可考虑filter级别过滤器 -->
+
+<!-- scan=true，一旦配置文件发生改变，将会被重新加载，默认为true； scanPeriod，监测配置文件是否有修改的时间间隔，默认单位是毫秒，scan为true才生效，默认的时间间隔为1分钟； debug=true，打印logback内部日志信息，实时查看logback运行状态，默认为false； -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <springProfile name="default">
+        <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n
+                </pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
