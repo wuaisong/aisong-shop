@@ -5,6 +5,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.SqlSessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -59,13 +60,12 @@ public class HelloController {
 
 
     @GetMapping("/hello")
-    public Object hello() throws NoSuchAlgorithmException {
-
-
+    @Cacheable(cacheNames = "hello")
+    public String hello() throws NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         md5.update("wuyaming".getBytes(StandardCharsets.UTF_8));
         byte[] digest = md5.digest();
-
+        log.info("md5: {}", digest);
 
         log.info("debug: hello~{}", springApplicationName);
         log.info("debug: hello~{}", appBuildTime);
