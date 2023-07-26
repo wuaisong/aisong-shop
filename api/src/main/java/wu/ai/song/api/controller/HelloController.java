@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wu.ai.song.api.entity.User;
@@ -59,14 +60,13 @@ public class HelloController {
     private Executor executor;
 
 
-    @GetMapping("/hello")
-    @Cacheable(cacheNames = "hello")
-    public String hello() throws NoSuchAlgorithmException {
+    @GetMapping("/hello/{name}")
+    @Cacheable(cacheNames = {"User", "User1"}, unless = "#name > 1", key = "#root.methodName+'[' + #name + ']'")
+    public String hello(@PathVariable("name") Integer name) throws NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
-        md5.update("wuyaming".getBytes(StandardCharsets.UTF_8));
+        md5.update(name.toString().getBytes(StandardCharsets.UTF_8));
         byte[] digest = md5.digest();
-        log.info("md5: {}", digest);
-
+        log.info("md5: {} : {}", name, digest);
         log.info("debug: hello~{}", springApplicationName);
         log.info("debug: hello~{}", appBuildTime);
         return "Hello World~";
