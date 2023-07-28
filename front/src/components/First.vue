@@ -43,7 +43,7 @@ nextTick(() => {
   for (; i < MAX; i++) {
     var b = Math.random() < 0.1;
     const myIcon = new BMap.Icon(!b ? carBlue : carRed, new BMap.Size(150, 150));
-    pt = new BMap.Point(Math.random() * 10 + 115, Math.random() * 9 + 25);
+    pt = new BMap.Point(Math.random() * 0.1 + 115, Math.random() * 0.09 + 25);
     var marker = new BMap.Marker(pt, {icon: myIcon});
     marker.needRed = b
     markers.push(marker);
@@ -51,8 +51,8 @@ nextTick(() => {
   //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
   var markerClusterer = new BMapLib.MarkerClusterer(map, {
     markers,
-    minClusterSize: 2,
-    maxZoom: 15,
+    minClusterSize: 1,
+    maxZoom: 14,
     isAverangeCenter: true
   });
   console.log(markerClusterer)
