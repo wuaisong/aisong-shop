@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import wu.ai.song.api.anno.CurrentUser;
 import wu.ai.song.api.entity.User;
 import wu.ai.song.api.mapper.UserDao;
 import wu.ai.song.api.redis.RedisUtil;
@@ -88,13 +89,15 @@ public class HelloController {
     }
 
     @GetMapping("/setSession")
-    public Object setSession(HttpServletRequest request) {
+    public Object setSession(HttpServletRequest request, @CurrentUser User user) {
         HttpSession session = request.getSession();
         session.setAttribute("userInfo", "new user");
         session.setMaxInactiveInterval(3600);
         log.info(session.getAttribute("userInfo").toString());
         session.removeAttribute("userInfo");
         log.info(ofNullable(session.getAttribute("userInfo")).orElse("null").toString());
+        String name = user.getName();
+        System.out.println("UserController getCurrentUser方法: " + name);
         return "ok";
     }
 
