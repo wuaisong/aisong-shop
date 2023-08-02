@@ -44,7 +44,7 @@ default生命周期拥有众多阶段，下表只是列出具有插件目标绑�
 
 自定义绑定：除了内置定义外我们也可以在pom文件中通过自定义plugin配置完成个性化的任务。比如我们在default生命周期的package阶段，在打包jar包的同时，把代码也打包。那么我们就可以在pom文件的plugins中增加如下配置完成该任务：
 
-```
+```apache
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-source-plugin</artifactId>
@@ -67,7 +67,7 @@ default生命周期拥有众多阶段，下表只是列出具有插件目标绑�
 
 有些插件的目标在实现时已经定义了默认绑定阶段，我们可以通过以下命令查看，其中会发现默认绑定配置的
 
-```
+```apache
 <plugin>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-maven-plugin</artifactId>
@@ -79,3 +79,117 @@ mvn help:describe -Dplugin=org.springframework.boot:spring-boot-maven-plugin:2.2
 mvn help:describe -Dplugin=org.apache.maven.plugins:maven-clean-plugin:3.1.0 -Ddetail
 
 ![stickPicture.png](./assets/1690946011260-stickPicture.png)
+
+## 打包资源文件
+
+1. 设置build_resources
+2. 使用build-helper-maven-plugin插件
+3. 使用maven-resources-plugin插件
+
+```apache
+<build>  
+    <finalName>test</finalName>  
+    <!--  
+    这样也可以把所有的xml文件，打包到相应位置。  
+    <resources>  
+        <resource>  
+            <directory>src/main/resources</directory>  
+            <includes>  
+                <include>**/*.properties</include>  
+                <include>**/*.xml</include>  
+                <include>**/*.tld</include>  
+            </includes>  
+            <filtering>false</filtering>  
+        </resource>  
+        <resource>  
+            <directory>src/main/java</directory>  
+            <includes>  
+                <include>**/*.properties</include>  
+                <include>**/*.xml</include>  
+                <include>**/*.tld</include>  
+            </includes>  
+            <filtering>false</filtering>  
+        </resource>  
+    </resources>  
+</build> 
+```
+
+```apache
+<build>  
+    ...  
+    </plugins>  
+        ...  
+        <!--  
+        此plugin可以用  
+        利用此plugin，把源代码中的xml文件，  
+        打包到相应位置，这里主要是为了打包Mybatis的mapper.xml文件   
+        -->  
+        <plugin>  
+            <groupId>org.codehaus.mojo</groupId>  
+            <artifactId>build-helper-maven-plugin</artifactId>  
+            <version>1.8</version>  
+            <executions>  
+                <execution>  
+                    <id>add-resource</id>  
+                    <phase>generate-resources</phase>  
+                    <goals>  
+                        <goal>add-resource</goal>  
+                    </goals>  
+                    <configuration>  
+                        <resources>  
+                            <resource>  
+                                <directory>src/main/java</directory>  
+                                <includes>  
+                                    <include>**/*.xml</include>  
+                                </includes>  
+                            </resource>  
+                        </resources>  
+                    </configuration>  
+                </execution>  
+            </executions>  
+        </plugin>   
+        ...  
+    </plugins>   
+    ...  
+</build>  
+```
+
+```apache
+<build>  
+    ...  
+    </plugins>  
+        ...  
+        <!--  
+        此plugin可以用  
+        利用此plugin，把源代码中的xml文件，打包到相应位置，  
+        这里主要是为了打包Mybatis的mapper.xml文件   
+        -->  
+        <plugin>  
+            <artifactId>maven-resources-plugin</artifactId>  
+            <version>2.5</version>  
+            <executions>  
+                <execution>  
+                    <id>copy-xmls</id>  
+                    <phase>process-sources</phase>  
+                    <goals>  
+                        <goal>copy-resources</goal>  
+                    </goals>  
+                    <configuration>  
+                        <outputDirectory>${basedir}/target/classes</outputDirectory>  
+                        <resources>  
+                            <resource>  
+                                <directory>${basedir}/src/main/java</directory>  
+                                <includes>  
+                                    <include>**/*.xml</include>  
+                                </includes>  
+                            </resource>  
+                        </resources>  
+                    </configuration>  
+                </execution>  
+            </executions>  
+        </plugin>   
+        ...  
+    </plugins>   
+    ...  
+</build>  
+```
