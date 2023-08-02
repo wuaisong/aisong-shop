@@ -3,7 +3,7 @@
     <div style="position: absolute;z-index:1;margin: 10px;">
       <span class="demonstration">评价：{{ store.double }}-{{ store.count }}</span>
 
-      <el-button type="primary" @click="increment">{{ getCount() }}</el-button>
+      <el-button type="primary" @click="flag && increment()">{{ getCount() }}</el-button>
     </div>
     <div class="container" id="myMap"></div>
   </div>
@@ -19,14 +19,14 @@ const obj1 = {};
 console.log(obj1?.a?.b ?? 233) //233
 const obj2 = {a: {b: 1}};
 console.log(obj2?.a?.b ?? 233) //1
-
+const flag = false;
 
 // 可以在组件中的任意位置访问 `store` 变量 ✨
 const store = useCounterStore()
 console.log(store)  // store 实例对象
 const increment = () => {
   store.increment()
-  store.double()
+  store.double
 }
 const getCount = () => {
   return store.count
