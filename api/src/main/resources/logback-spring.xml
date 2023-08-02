@@ -13,6 +13,24 @@
             </encoder>
         </appender>
     </springProfile>
+    <springProfile name="it">
+        <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>[%-5level] it %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n
+                </pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+    <springProfile name="ut">
+        <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>[%-5level] ut %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n
+                </pattern>
+            </encoder>
+        </appender>
+    </springProfile>
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>

@@ -30,7 +30,7 @@ class ApiApplicationTestsIT {
      */
     @Test
     public void shouldReturnDefaultMessage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/hello")).andDo(MockMvcResultHandlers.print())
+        mockMvc.perform(MockMvcRequestBuilders.get("/hello/32")).andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
         mockMvc.perform(MockMvcRequestBuilders.get("/setSession")).andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());

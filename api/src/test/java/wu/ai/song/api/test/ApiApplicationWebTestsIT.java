@@ -13,7 +13,7 @@ class ApiApplicationWebTestsIT {
 
     @Test
     public void test() {
-        String response = restTemplate.getForObject("/hello", String.class);
+        String response = restTemplate.getForObject("/hello/55", String.class);
         System.out.println("web test");
         Assertions.assertThat(response).contains("Hello");
     }
