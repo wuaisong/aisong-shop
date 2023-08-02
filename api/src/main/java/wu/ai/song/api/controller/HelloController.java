@@ -1,12 +1,27 @@
 package wu.ai.song.api.controller;
 
+import com.baomidou.mybatisplus.core.override.MybatisMapperProxy;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.SqlSessionUtils;
+import org.springframework.aop.config.AopConfigUtils;
+import org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator;
+import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
+import org.springframework.aop.framework.autoproxy.InfrastructureAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory;
+import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.AutoProxyRegistrar;
+import org.springframework.dao.support.PersistenceExceptionTranslator;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -23,11 +38,11 @@ import wu.ai.song.api.utils.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
 
 import static java.util.Optional.ofNullable;
 
@@ -57,7 +72,7 @@ public class HelloController {
     private TransactionTemplate transactionTemplate;
 
     @Autowired
-    private Executor executor;
+    private ThreadPoolTaskExecutor taskExecutor;
 
 
     @GetMapping("/hello/{name}")
@@ -87,19 +102,19 @@ public class HelloController {
      * 测试事务
      *
      * @param request
-     * @see org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration 自动配置事务
-     * @see org.springframework.transaction.annotation.EnableTransactionManagement 开启事务
-     * @see org.springframework.context.annotation.AutoProxyRegistrar
-     * @see org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration
-     * @see org.springframework.aop.config.AopConfigUtils
-     * @see org.springframework.aop.framework.autoproxy.InfrastructureAdvisorAutoProxyCreator
-     * @see org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator
-     * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization(java.lang.Object, java.lang.String)
-     * @see org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization(java.lang.Object, java.lang.String)
-     * @see com.baomidou.mybatisplus.core.override.MybatisMapperProxy#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
-     * @see org.mybatis.spring.SqlSessionTemplate
-     * @see SqlSessionTemplate#SqlSessionTemplate(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)
-     * @see SqlSessionUtils#getSqlSession(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)
+     * @see TransactionAutoConfiguration 自动配置事务
+     * @see EnableTransactionManagement 开启事务
+     * @see AutoProxyRegistrar
+     * @see ProxyTransactionManagementConfiguration
+     * @see AopConfigUtils
+     * @see InfrastructureAdvisorAutoProxyCreator
+     * @see AbstractAdvisorAutoProxyCreator
+     * @see AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization(Object, String)
+     * @see AbstractAutoProxyCreator#postProcessAfterInitialization(Object, String)
+     * @see MybatisMapperProxy#invoke(Object, Method, Object[])
+     * @see SqlSessionTemplate
+     * @see SqlSessionTemplate#SqlSessionTemplate(SqlSessionFactory, ExecutorType, PersistenceExceptionTranslator)
+     * @see SqlSessionUtils#getSqlSession(SqlSessionFactory, ExecutorType, PersistenceExceptionTranslator)
      */
 
     @GetMapping("/testTranslate")
@@ -187,7 +202,7 @@ public class HelloController {
                 }
                 latch.countDown();
             };
-            executor.execute(task);
+            taskExecutor.execute(task);
         }
         try {
             latch.await();
