@@ -9,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import wu.ai.song.api.ApiApplication;
 import wu.ai.song.api.entity.SysUser;
@@ -28,6 +26,7 @@ import java.util.stream.IntStream;
 //不启动服务器,使用mockMvc进行测试http请求。启动了完整的Spring应用程序上下文，但没有启动服务器
 @AutoConfigureMockMvc
 @ActiveProfiles("ut")
+@Transactional
 class ApiApplicationTestsUT {
     @Autowired
     private UserDao userDao;
@@ -139,7 +138,6 @@ class ApiApplicationTestsUT {
      * AbstractPlatformTransactionManager#processCommit
      */
     @Test
-    @Transactional
     public void test7() {
         // 第一次查询
         List<User> list = userDao.getDepartmentAll();
@@ -150,7 +148,6 @@ class ApiApplicationTestsUT {
     }
 
     @Test
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void test8() {
         Cursor<User> users = userDao.cursorDepartment();
         users.forEach(user -> user.setName("MoBai~~~~"));
@@ -171,8 +168,6 @@ class ApiApplicationTestsUT {
      * 添加数据
      */
     @Test
-    @Rollback
-    @Transactional
     public void testInsert() {
         ArrayList<User> objects = Lists.newArrayList();
         IntStream.range(0, 10).forEach(i -> {
@@ -366,14 +361,12 @@ class ApiApplicationTestsUT {
     }
 
     @Test
-    @Transactional
     public void testCursor1() {
         List<User> users = userDao.queryDepartmentAll();
         users.forEach(System.out::println);
     }
 
     @Test
-    @Transactional
     public void testCursor2() throws IOException {
         try (Cursor<User> cursor = userDao.cursorDepartment()) {
             Iterator<User> iterator = cursor.iterator();

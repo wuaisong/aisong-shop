@@ -9,11 +9,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 import wu.ai.song.api.controller.MockController;
 import wu.ai.song.api.service.Demo;
 import wu.ai.song.api.utils.Result;
 
 @WebMvcTest(MockController.class)
+@Transactional
 class TestControllerTests {
 
     @Autowired
