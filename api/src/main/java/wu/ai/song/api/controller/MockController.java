@@ -21,7 +21,7 @@ public class MockController {
      */
     @GetMapping("/startTwoMock")
     public void startTwo() {
-        Result result = demo.startTwoSeckil(1, 1);
+        Result result = demo.startTwoSeckil(2, 2);
         log.info("current result: {}", result);
     }
 }

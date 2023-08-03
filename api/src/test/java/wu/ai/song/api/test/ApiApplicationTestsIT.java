@@ -18,10 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class ApiApplicationTestsIT {
 
-    @Test
-    void contextLoads() {
-    }
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -33,7 +29,7 @@ class ApiApplicationTestsIT {
     @Test
     public void shouldReturnDefaultMessage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/hello/32")).andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.content().string("Hello World~"));
         mockMvc.perform(MockMvcRequestBuilders.get("/setSession")).andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
         mockMvc.perform(MockMvcRequestBuilders.get("/testTranslate")).andDo(MockMvcResultHandlers.print())
