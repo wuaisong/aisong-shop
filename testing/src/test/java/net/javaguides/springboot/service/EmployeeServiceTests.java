@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -100,7 +101,10 @@ public class EmployeeServiceTests {
                 .email("tony@gmail.com")
                 .build();
 
-        given(employeeRepository.findAll()).willReturn(List.of(employee,employee1));
+        ArrayList<Employee> employees = new ArrayList<>();
+        employees.add(employee1);
+        employees.add(employee);
+        given(employeeRepository.findAll()).willReturn(employees);
 
         // when -  action or the behaviour that we are going test
         List<Employee> employeeList = employeeService.getAllEmployees();
