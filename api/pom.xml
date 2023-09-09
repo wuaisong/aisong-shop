@@ -25,6 +25,27 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>one.util</groupId>
+            <artifactId>streamex</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jool-java-8</artifactId>
+            <version>0.9.14</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.1-jre</version>
+        </dependency>
+        <!-- 阿里JSON解析器 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.79</version>
+        </dependency>
+        <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson-spring-boot-starter</artifactId>
             <version>3.17.0</version>
@@ -159,17 +180,17 @@
                         </goals>
                     </execution>
                     <!-- 以上默认只会生成jacoco.exec, 要生成cvs/html，需要以下配置 -->
-<!--                    <execution>-->
-<!--                        <id>post-unit-test</id>-->
-<!--                        <phase>test</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>report</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <dataFile>target/jacoco.exec</dataFile>-->
-<!--                            <outputDirectory>target/jacoco-ut</outputDirectory>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
+                    <!--                    <execution>-->
+                    <!--                        <id>post-unit-test</id>-->
+                    <!--                        <phase>test</phase>-->
+                    <!--                        <goals>-->
+                    <!--                            <goal>report</goal>-->
+                    <!--                        </goals>-->
+                    <!--                        <configuration>-->
+                    <!--                            <dataFile>target/jacoco.exec</dataFile>-->
+                    <!--                            <outputDirectory>target/jacoco-ut</outputDirectory>-->
+                    <!--                        </configuration>-->
+                    <!--                    </execution>-->
                 </executions>
             </plugin>
 
