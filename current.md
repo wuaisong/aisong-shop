@@ -42,7 +42,9 @@ service docker restart
 }
 ```
 
+# 配置Nacos
 
+docker run -d --restart=unless-stopped --name nacos -p 8848:8848 -p 9848:9848 -e PREFER_HOST_MODE=127.0.0.1 -e MODE=standalone lznexus.luxsan-ict.com:8543/proxy/nacos/nacos-server:2.0.2
 
 
 

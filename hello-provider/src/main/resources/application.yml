@@ -1,0 +1,10 @@
+server:
+  port: 8481
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.8.200:8848
+  application.name: provider
+
+

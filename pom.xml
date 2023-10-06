@@ -90,6 +90,8 @@
         <module>api</module>
         <module>common</module>
         <module>testing</module>
+        <module>hello-consumer</module>
+        <module>hello-provider</module>
     </modules>
     <dependencyManagement>
         <dependencies>
