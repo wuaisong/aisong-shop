@@ -211,7 +211,48 @@
                     <!--                    </execution>-->
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>1.8.0</version>
+                <configuration>
+                    <!-- 拉取所需的基础镜像 - 这里用于运行springboot项目 -->
+                    <from>
+                        <image>openjdk:alpine</image>
+                    </from>
+                    <!-- 最后生成的镜像配置 -->
+                    <to>
+                        <!-- push docer-hub官方仓库。用户名/镜像名：版本号， -->
+                        <image>wuaisong/mydocker</image>
+                        <!-- 如果是阿里云的容器镜像仓库，则使用容器的配置 前缀/命名空间/仓库名 -->
+                        <!--<image>registry.cn-chengdu.aliyuncs.com/renbaojia/ctfo</image>-->
+                        <tags>
+                            <!--版本号-->
+                            <tag>1.1.0</tag>
+                        </tags>
+                        <auth>
+                            <!--在docker-hub或者阿里云上的账号和密码-->
+                            <username></username>
+                            <password></password>
+                        </auth>
+                    </to>
+                    <container>
+                        <mainClass>wu.ai.song.api.ApiApplication</mainClass>
+                        <useCurrentTimestamp>true</useCurrentTimestamp>
+                        <ports>
+                            <port>80</port>
+                        </ports>
+                    </container>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <profiles>
