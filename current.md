@@ -48,8 +48,9 @@ service docker restart
 # 配置Nacos
 
 docker run -d --restart=unless-stopped --name nacos -p 8848:8848 -p 9848:9848 -e PREFER_HOST_MODE=127.0.0.1 -e MODE=standalone lznexus.luxsan-ict.com:8543/proxy/nacos/nacos-server:2.0.2
-
-
+curl -i -X GET "http://127.0.0.1:32364/whoami" -H "Host: ai.com"
+curl -X GET '10.43.196.255:8848/nacos/v1/ns/service/list?pageNo=1&pageSize=2'
+curl -X GET '127.0.0.1:8848/nacos/v1/ns/service/list?pageNo=1&pageSize=2'
 
 
 
