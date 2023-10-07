@@ -21,6 +21,9 @@ kubectl delete pod apisix-dashboard-6f9995f49f-8xs4b -n ingress-apisix
 
 # 镜像仓库
 
+docker run -d -p 8481:8481 -e spring.cloud.nacos.discovery.server-addr=192.168.8.200:8848 --net mynet wuaisong/mydocker:provider
+docker run -d -p 8482:8482 -e spring.cloud.nacos.discovery.server-addr=192.168.8.200:8848 --net mynet wuaisong/mydocker:consumer
+
 docker run -d -p 5000:5000 --restart=always --name registry lznexus.luxsan-ict.com:8543/proxy/library/registry:2
 curl -XGET http://127.0.0.1:5000/v2/_catalog
 curl -XGET http://127.0.0.1:5000/v2/wuaisong/mydocker/tags/list
