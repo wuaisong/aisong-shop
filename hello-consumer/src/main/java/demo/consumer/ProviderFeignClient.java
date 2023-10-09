@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient("provider")
 public interface ProviderFeignClient {
-	
-	@RequestMapping("/provider/hello")
+
+	@RequestMapping("/api/provider/hello")
 	public String hello(@RequestParam("name") String name);
-	
+
 }

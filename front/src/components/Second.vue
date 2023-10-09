@@ -11,8 +11,17 @@
       </td>
     </tr>
   </table>
+  <el-button @click="getData">BUTTON</el-button>
 </template>
 <script setup>
+import axios from 'axios'
+
+let result = 'data'
+const getData = async () => {
+  const response = await axios.get('/api/consumer/provider?name=test')
+  console.log(response)
+}
+
 const testdata = [
   {
     studentID: '0001',
