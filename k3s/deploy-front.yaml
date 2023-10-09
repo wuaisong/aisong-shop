@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front
+spec:
+  selector:
+    matchLabels:
+      run: front
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: front
+    spec:
+      containers:
+      - name: front
+        image: wuaisong/mydocker:front
+        ports:
+        - containerPort: 80
