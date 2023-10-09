@@ -11,15 +11,21 @@
       </td>
     </tr>
   </table>
-  <el-button @click="getData">BUTTON</el-button>
+  <el-button @click="getData()">BUTTON</el-button>
+  <span>{{ result }}</span>
+
 </template>
 <script setup>
 import axios from 'axios'
+import {ref} from 'vue'
 
-let result = 'data'
+let result = ref(0)
+const _this = this
+
 const getData = async () => {
   const response = await axios.get('/api/consumer/provider?name=test')
   console.log(response)
+  result.value = response.data
 }
 
 const testdata = [
