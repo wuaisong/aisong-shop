@@ -6,11 +6,13 @@
 8001
 15537
 
+7081
+
 # 镜像打包
 
-docker pull lznexus.luxsan-ict.com:8543/proxy/apache/apisix-dashboard:3.0.0-alpine
-docker tag lznexus.luxsan-ict.com:8543/proxy/apache/apisix-dashboard:3.0.0-alpine 10.191.10.23:5000/apache/apisix-dashboard:3.0.0-alpine
-docker push 10.191.10.23:5000/apache/apisix-dashboard:3.0.0-alpine
+docker pull lznexus.luxsan-ict.com:8543/proxy/wuaisong/mydocker:front
+docker tag lznexus.luxsan-ict.com:8543/proxy/wuaisong/mydocker:front 10.191.10.23:5000/wuaisong/mydocker:front
+docker push 10.191.10.23:5000/wuaisong/mydocker:front
 
 # 找镜像
 
@@ -54,8 +56,15 @@ curl -X GET '127.0.0.1:8848/nacos/v1/ns/service/list?pageNo=1&pageSize=2'
 
 # 打包本地镜像并推送
 docker build -t wuaisong/mydocker:front .
-docker run -d --privileged=true --name mydocker --restart always --net=host  wuaisong/mydocker:front
 docker push wuaisong/mydocker:front
+docker run -p 8777:80 -d --privileged=true --name mydocker --restart always wuaisong/mydocker:front
+docker tag wuaisong/mydocker:front 10.191.10.23:5000/wuaisong/mydocker:front
+
+# 映射地址问题
+
+vi rinetd.conf
+pkill rinetd
+rinetd -c rinetd.conf 
 
 
 

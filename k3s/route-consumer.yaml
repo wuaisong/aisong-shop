@@ -9,7 +9,7 @@ spec:
       hosts:
       - ai.com
       paths:
-      - "/consumer/*"
+      - "/api/consumer/*"
     backends:
     - serviceName: consumer
       servicePort: 8482
