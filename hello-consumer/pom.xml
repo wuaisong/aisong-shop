@@ -77,8 +77,8 @@
 						</tags>
 						<auth>
 							<!--在docker-hub或者阿里云上的账号和密码-->
-							<username></username>
-							<password></password>
+							<username>wuaisong</username>
+							<password>Songsu666.</password>
 						</auth>
 					</to>
 					<container>

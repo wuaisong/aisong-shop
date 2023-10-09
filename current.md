@@ -52,6 +52,12 @@ curl -i -X GET "http://127.0.0.1:32364/whoami" -H "Host: ai.com"
 curl -X GET '10.43.196.255:8848/nacos/v1/ns/service/list?pageNo=1&pageSize=2'
 curl -X GET '127.0.0.1:8848/nacos/v1/ns/service/list?pageNo=1&pageSize=2'
 
+# 打包本地镜像并推送
+docker build -t wuaisong/mydocker:front .
+docker run -d --privileged=true --name mydocker --restart always --net=host  wuaisong/mydocker:front
+docker push wuaisong/mydocker:front
+
+
 
 
 
