@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer
+spec:
+  selector:
+    matchLabels:
+      run: consumer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: consumer
+    spec:
+      containers:
+      - name: consumer
+        image: wuaisong/mydocker:consumer
+        env:
+        - name: spring.cloud.nacos.discovery.server-addr
+          value: nacos-prod:8848
+        ports:
+        - containerPort: 8482
+

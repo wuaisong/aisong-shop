@@ -1,0 +1,15 @@
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: httpserver-route
+spec:
+  http:
+  - name: rule1
+    match:
+      hosts:
+      - ai.com
+      paths:
+      - "/consumer/*"
+    backends:
+    - serviceName: consumer
+      servicePort: 8482

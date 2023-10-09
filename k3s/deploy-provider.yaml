@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provider
+spec:
+  selector:
+    matchLabels:
+      run: provider
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: provider
+    spec:
+      containers:
+      - name: provider
+        image: wuaisong/mydocker:provider
+        env:
+        - name: spring.cloud.nacos.discovery.server-addr
+          value: nacos-prod:8848
+        ports:
+        - containerPort: 8481
+
