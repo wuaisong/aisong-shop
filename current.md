@@ -71,11 +71,23 @@ rinetd -c rinetd.conf
 
 yum install bind-utils
 nslookup www.baidu.com
+dig www.baidu.com
+nslookup -type=any www.baidu.com
+
+## 网络查看
+
+kubectl exec -it dnsutils /bin/sh -n kube-system
+
 cat /etc/resolv.conf
 traceroute 10.42.221.95
 ping 10.42.221.95
 tracepath 10.42.221.95
+## TCP网络追踪
+traceroute -I gps.luxsan-ict.com
+traceroute -I 10.42.221.95
+## 默认网关查看
 
+ip route show
 
 
 
