@@ -67,6 +67,14 @@ vi rinetd.conf
 pkill rinetd
 rinetd -c rinetd.conf 
 
+# 网络工具
+
+yum install bind-utils
+nslookup www.baidu.com
+cat /etc/resolv.conf
+traceroute 10.42.221.95
+ping 10.42.221.95
+tracepath 10.42.221.95
 
 
 
