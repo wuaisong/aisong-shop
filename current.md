@@ -59,6 +59,7 @@ docker build -t wuaisong/mydocker:front .
 docker push wuaisong/mydocker:front
 docker run -p 8777:80 -d --privileged=true --name mydocker --restart always wuaisong/mydocker:front
 docker tag wuaisong/mydocker:front 10.191.10.23:5000/wuaisong/mydocker:front
+docker push 10.191.10.23:5000/wuaisong/mydocker:front
 
 # 映射地址问题
 
