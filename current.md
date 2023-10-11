@@ -22,7 +22,9 @@ kubectl delete pod apisix-dashboard-6f9995f49f-8xs4b -n ingress-apisix
 10.191.10.23:32364
 
 # 镜像仓库
-
+docker network create -d bridge mynet
+docker network ls
+docker inspect mynet
 docker run -d -p 8481:8481 -e spring.cloud.nacos.discovery.server-addr=192.168.8.200:8848 --net mynet wuaisong/mydocker:provider
 docker run -d -p 8482:8482 -e spring.cloud.nacos.discovery.server-addr=192.168.8.200:8848 --net mynet wuaisong/mydocker:consumer
 
@@ -72,29 +74,53 @@ vi rinetd.conf
 pkill rinetd
 rinetd -c rinetd.conf
 
-# 网络工具
+# 网络工具，TCP网络追踪
 
 yum install bind-utils
 nslookup www.baidu.com
-dig www.baidu.com
 nslookup -type=any www.baidu.com
+dig www.baidu.com
+traceroute -I gps.luxsan-ict.com
+traceroute -I 10.42.221.95
+ip route show
 
 ## 网络查看
-
-kubectl exec -it dnsutils /bin/sh -n kube-system
 
 cat /etc/resolv.conf
 traceroute 10.42.221.95
 ping 10.42.221.95
 tracepath 10.42.221.95
 
-## TCP网络追踪
-
-traceroute -I gps.luxsan-ict.com
-traceroute -I 10.42.221.95
-
-## 默认网关查看
-
-ip route show
+## 常用命令
 
 journalctl -f -u kubelet
+kubectl get svc,ep -n kube-system | grep dns
+kubectl get po -n kube-system -o wide | grep core
+kubectl exec busybox-588c6c8cf4-scmmg -- cat /etc/resolv.conf
+kubectl exec -it dnsutils /bin/sh -n kube-system
+kubectl get cs # 查看集群状态
+kubectl get nodes # 查看集群节点信息
+kubectl get ns # 查看集群命名空间
+kubectl get svc -n kube-system # 查看指定命名空间的服务
+kubectl get pod <pod-name> -o wide # 查看Pod详细信息
+kubectl get pod <pod-name> -o yaml # 以yaml格式查看Pod详细信息
+kubectl get pods # 查看资源对象，查看所有Pod列表
+kubectl get pods --namespace=test
+kubectl get rc,service # 查看资源对象，查看rc和service列表
+kubectl get pod,svc,ep --show-labels # 查看pod,svc,ep能及标签信息
+kubectl get all --all-namespaces # 查看所有的命名空间
+--回滚到上一个版本
+kubectl rollout undo deployment/test --namespace=test
+--回滚到指定版本
+kubectl rollout undo deployment/test --to-revision=1 --namespace=test
+--重启pod
+kubectl rollout restart deployment {pod}  -n {namespace}
+kubectl describe pod $mypod | grep 'Controlled By:'
+kubectl describe pod whoami-668b48497f-vwhh5
+kubectl delete replicaset metrics-server-644778ff4f -n kube-system
+# Get all releases
+helm ls --all-namespaces
+# OR
+helm ls -A
+# Delete release
+helm uninstall release_name -n release_namespace
