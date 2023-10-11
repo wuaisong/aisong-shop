@@ -38,6 +38,7 @@ kubectl port-forward --address 0.0.0.0 pod/kuboard-v3-6854dcdf96-tc484 15537:80 
 
 service docker restart
 /etc/docker/daemon.json
+
 ```
 { 
 	"insecure-registries":[
@@ -54,10 +55,14 @@ curl -i -X GET "http://127.0.0.1:32364/whoami" -H "Host: ai.com"
 curl -X GET '10.43.196.255:8848/nacos/v1/ns/service/list?pageNo=1&pageSize=2'
 curl -X GET '127.0.0.1:8848/nacos/v1/ns/service/list?pageNo=1&pageSize=2'
 
-# 打包本地镜像并推送
+# 前端打包本地镜像并推送
+
 docker build -t wuaisong/mydocker:front .
 docker push wuaisong/mydocker:front
 docker run -p 8777:80 -d --privileged=true --name mydocker --restart always wuaisong/mydocker:front
+
+##### docker run -d --privileged=true --name nss-web1.0 --restart always --net=host nss-web:1.0
+
 docker tag wuaisong/mydocker:front 10.191.10.23:5000/wuaisong/mydocker:front
 docker push 10.191.10.23:5000/wuaisong/mydocker:front
 
@@ -65,7 +70,7 @@ docker push 10.191.10.23:5000/wuaisong/mydocker:front
 
 vi rinetd.conf
 pkill rinetd
-rinetd -c rinetd.conf 
+rinetd -c rinetd.conf
 
 # 网络工具
 
@@ -82,28 +87,14 @@ cat /etc/resolv.conf
 traceroute 10.42.221.95
 ping 10.42.221.95
 tracepath 10.42.221.95
+
 ## TCP网络追踪
+
 traceroute -I gps.luxsan-ict.com
 traceroute -I 10.42.221.95
+
 ## 默认网关查看
 
 ip route show
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+journalctl -f -u kubelet
