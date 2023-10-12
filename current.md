@@ -69,7 +69,7 @@ docker tag wuaisong/mydocker:front 10.191.10.23:5000/wuaisong/mydocker:front
 docker push 10.191.10.23:5000/wuaisong/mydocker:front
 
 # 映射地址问题
-
+yum install http://li.nux.ro/download/nux/misc/el7/x86_64//rinetd-0.62-9.el7.nux.x86_64.rpm
 vi rinetd.conf
 pkill rinetd
 rinetd -c rinetd.conf
@@ -124,3 +124,6 @@ helm ls --all-namespaces
 helm ls -A
 # Delete release
 helm uninstall release_name -n release_namespace
+
+
+crictl copy d6562d4e1c085:/usr/local/apisix/conf/config-default.yaml ./a.yaml
