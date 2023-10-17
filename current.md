@@ -124,6 +124,8 @@ helm ls --all-namespaces
 helm ls -A
 # Delete release
 helm uninstall release_name -n release_namespace
-
+helm repo list
+helm search repo apisix
+helm fetch apisix/apisix
 
 crictl copy d6562d4e1c085:/usr/local/apisix/conf/config-default.yaml ./a.yaml
