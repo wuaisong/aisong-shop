@@ -76,7 +76,7 @@ rinetd -c rinetd.conf
 
 # 网络工具，TCP网络追踪
 
-yum install bind-utils
+yum install bind-utils -y
 nslookup www.baidu.com
 nslookup -type=any www.baidu.com
 dig www.baidu.com
