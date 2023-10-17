@@ -127,5 +127,5 @@ helm uninstall release_name -n release_namespace
 helm repo list
 helm search repo apisix
 helm fetch apisix/apisix
-
+helm install apisix ./apisix-2.3.0.tgz --set gateway.type=LoadBalancer --set ingress-controller.enabled=true --namespace ingress-apisix --set dashboard.enabled=true --set ingress-controller.config.apisix.serviceNamespace=ingress-apisix --set ingress-controller.config.kubernetes.apisixRouteVersion="apisix.apache.org/v2beta3" --set apisix.timezone=Asia/Shanghai --set apisix.serviceMonitor.enabled=true --set apisix.serviceMonitor.namespace=monitoring
 crictl copy d6562d4e1c085:/usr/local/apisix/conf/config-default.yaml ./a.yaml
