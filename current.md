@@ -129,3 +129,10 @@ helm search repo apisix
 helm fetch apisix/apisix
 helm install apisix ./apisix-2.3.0.tgz --set gateway.type=LoadBalancer --set ingress-controller.enabled=true --namespace ingress-apisix --set dashboard.enabled=true --set ingress-controller.config.apisix.serviceNamespace=ingress-apisix --set ingress-controller.config.kubernetes.apisixRouteVersion="apisix.apache.org/v2beta3" --set apisix.timezone=Asia/Shanghai --set apisix.serviceMonitor.enabled=true --set apisix.serviceMonitor.namespace=monitoring
 crictl copy d6562d4e1c085:/usr/local/apisix/conf/config-default.yaml ./a.yaml
+
+# 常用请求
+curl http://127.0.0.1:9091/apisix/prometheus/metrics -H 'Host: test.prometheus.org'
+curl http://192.168.8.135:9091/apisix/prometheus/metrics
+wget http://192.168.8.135:9091/apisix/prometheus/metrics
+docker run -d --name prometheus -p 9090:9090 lznexus.luxsan-ict.com:8543/proxy/prom/prometheus
+docker run -d --restart=unless-stopped --name nacos -p 8848:8848 -p 9848:9848 -e PREFER_HOST_MODE=127.0.0.1 -e MODE=standalone lznexus.luxsan-ict.com:8543/proxy/nacos/nacos-server:2.0.2

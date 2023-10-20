@@ -8,5 +8,17 @@ spring:
       discovery:
         server-addr: 192.168.8.200:8848
   application.name: provider
-
-
+management:
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      - consumer
+  endpoints:
+    web:
+      exposure:
+        include: "*"
