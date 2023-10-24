@@ -190,3 +190,19 @@ crontab -e
 `helm install prometheus -n monitor prometheus-community/prometheus`
 `helm install prometheus -n monitor ./prometheus-25.1.0.tgz`
 `helm fetch  prometheus-community/prometheus`
+
+# 处理容器时区问题
+
+```
+第一种：容器如果没有启动，可以在运行命令里添加 -e TZ=Asia/Shanghai 字段
+docker run -e TZ=Asia/Shanghai .........
+第二种：容器已经启动
+拿我的mysql举例，默认是标准的UTC时间，而中国属于东八区。
+东八区（UTC+08:00）是比世界协调时间（UTC）快8小时的时区，也就是说当标准的UTC时间为00:00时，东八区的标准时间为08:00。
+进入容器，执行命令date可以看到时间为1点54分，但是在中国现在是9点54分
+执行以下命令，如果是别的容器把我的mysql容器名替换成自己的容器名或id即可
+docker cp /usr/share/zoneinfo/Asia/Shanghai mysql:/etc/localtime
+此时再执行命令date可以看到时间为10点08分，与中国现在时间相同
+然后重启mysql即可
+docker restart mysql
+```
