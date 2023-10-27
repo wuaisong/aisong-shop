@@ -43,7 +43,7 @@ public class RecordVideoThread extends Thread {
                     }
                 }
                 // 流媒体输出地址，分辨率（长，高），是否录制音频（0:不录制/1:录制）
-                recorder = new FFmpegFrameRecorder(filePath, 1080, 1440, 1);
+                recorder = new FFmpegFrameRecorder(filePath, 1080, 1920, 1);
                 recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);// 直播流格式
                 recorder.setFormat("mp4");// 录制的视频格式
                 recorder.setFrameRate(25);// 帧数
