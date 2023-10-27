@@ -17,6 +17,12 @@
         <maven-jar-plugin.version>3.0.0</maven-jar-plugin.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv-platform</artifactId>
+            <version>1.5.1</version> <!-- 请检查最新版本 -->
+        </dependency>
+
         <!-- 开启 Spring Boot Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
