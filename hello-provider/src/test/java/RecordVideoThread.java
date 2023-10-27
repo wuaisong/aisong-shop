@@ -43,14 +43,18 @@ public class RecordVideoThread extends Thread {
                     }
                 }
                 // 流媒体输出地址，分辨率（长，高），是否录制音频（0:不录制/1:录制）
-                recorder = new FFmpegFrameRecorder(filePath, 1080, 1920, 1);
+                System.out.println(frame.imageWidth);
+                System.out.println(frame.imageHeight);
+                recorder = new FFmpegFrameRecorder(filePath, 1920, 1080, 1);
                 recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);// 直播流格式
                 recorder.setFormat("mp4");// 录制的视频格式
-                recorder.setFrameRate(25);// 帧数
+                // recorder.setFrameRate(25);// 帧数
                 //百度翻译的比特率，默认400000，但是我400000贼模糊，调成800000比较合适
                 recorder.setVideoBitrate(800000);
                 recorder.start();
-                while ((frame != null)) {
+                long endTime = System.currentTimeMillis() + 60 * 1000;
+                // 如果没有到录制结束时间并且获取到了下一帧则继续录制
+                while ((System.currentTimeMillis() < endTime) && (frame != null)) {
                     recorder.record(frame);// 录制
                     frame = grabber.grabFrame();// 获取下一帧
                 }
