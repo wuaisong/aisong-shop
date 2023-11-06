@@ -15,8 +15,27 @@
 
 # 找镜像
 
-`kubectl describe pod apisix-dashboard-6f9995f49f-8xs4b -n ingress-apisix`
-`kubectl delete pod apisix-dashboard-6f9995f49f-8xs4b -n ingress-apisix`
+kubectl describe pod prometheus-alertmanager-0 -n monitor
+kubectl describe pod prometheus-prometheus-node-exporter-6xsct -n monitor
+kubectl describe pod prometheus-kube-state-metrics-7645bc5dc7-s2j8q -n monitor
+kubectl describe pod prometheus-server-7bf877fd64-mwrxx  -n monitor
+
+
+
+docker tag quay.io/prometheus/alertmanager:v0.26.0 10.191.10.23:7081/prometheus/alertmanager:v0.26.0
+docker tag quay.io/prometheus/node-exporter:v1.6.1 10.191.10.23:7081/prometheus/node-exporter:v1.6.1
+docker tag quay.io/prometheus-operator/prometheus-config-reloader:v0.67.0 10.191.10.23:7081/prometheus-operator/prometheus-config-reloader:v0.67.0
+docker tag quay.io/prometheus/prometheus:v2.47.2 10.191.10.23:7081/prometheus/prometheus:v2.47.2
+
+docker push 10.191.10.23:7081/prometheus/alertmanager:v0.26.0
+docker push 10.191.10.23:7081/prometheus/node-exporter:v1.6.1
+docker push 10.191.10.23:7081/prometheus-operator/prometheus-config-reloader:v0.67.0
+docker push 10.191.10.23:7081/prometheus/prometheus:v2.47.2
+
+kubectl describe pod apisix-dashboard-6f9995f49f-8xs4b -n monitor
+kubectl describe pod apisix-dashboard-6f9995f49f-8xs4b -n monitor
+kubectl describe pod  prometheus-server-7bf877fd64-mwrxx -n monitor
+kubectl delete pod apisix-dashboard-6f9995f49f-8xs4b -n ingress-apisix
 
 # 镜像仓库
 
@@ -186,7 +205,15 @@ crontab -e
 ```
 
 # 安装prometheus
-
+```
+# 添加grafana和prometheus-community仓库
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+# 更新仓库
+helm repo update
+# 查询chart
+helm search repo grafana
+```
 `helm install prometheus -n monitor prometheus-community/prometheus`
 `helm install prometheus -n monitor ./prometheus-25.1.0.tgz`
 `helm fetch  prometheus-community/prometheus`
