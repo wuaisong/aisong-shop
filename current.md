@@ -215,9 +215,10 @@ helm repo update
 helm search repo grafana
 ```
 `helm install prometheus -n monitor prometheus-community/prometheus`
-`helm install prometheus -n monitor ./prometheus-25.1.0.tgz`
+`helm install prometheus -n monitor ./prometheus-25.4.0.tgz`
 `helm fetch  prometheus-community/prometheus`
 `lznexus.luxsan-ict.com:8543/proxy/bitnami/kube-state-metrics:2.10.0`
+`docker pull bitnami/prometheus:2.47.2`
 
 # 处理容器时区问题
 
