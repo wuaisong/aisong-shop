@@ -235,3 +235,7 @@ docker cp /usr/share/zoneinfo/Asia/Shanghai mysql:/etc/localtime
 然后重启mysql即可
 docker restart mysql
 ```
+
+# arthsa使用
+
+`https://github.com/alibaba/arthas/releases/download/arthas-all-3.6.4/arthas-bin.zip`
