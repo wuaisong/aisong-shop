@@ -48,7 +48,7 @@ nextTick(() => {
     marker.needRed = b
     markers.push(marker);
   }
-  //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+  //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可TEST。
   var markerClusterer = new BMapLib.MarkerClusterer(map, {
     markers,
     minClusterSize: 1,
