@@ -92,6 +92,7 @@
         <module>testing</module>
         <module>hello-consumer</module>
         <module>hello-provider</module>
+        <module>netty</module>
     </modules>
     <dependencyManagement>
         <dependencies>
