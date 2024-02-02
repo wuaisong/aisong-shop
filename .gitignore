@@ -6,4 +6,13 @@
 **/pom-xml-flattened
 **/sql.log
 **/*.hprof*
+/llcom/core_script
+/llcom/logs
+/llcom/user_script_recv_convert
+/llcom/user_script_send_convert
+/llcom/user_script_run
+/llcom/libusb-1.0
+/llcom/LICENSE
+/llcom/settings.json
+/llcom/反馈网址.txt
 
