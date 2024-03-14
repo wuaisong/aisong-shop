@@ -56,7 +56,7 @@ public class MessageEventHandler {
     }
 
     /**
-     * 监听客户端事件messageevent
+     * 监听客户端事件messageEvent
      *
      * @param client  　客户端信息
      * @param request 请求信息
@@ -64,9 +64,9 @@ public class MessageEventHandler {
      */
     @OnEvent(value = "messageEvent")
     public void onEvent(SocketIOClient client, AckRequest request, Message data) {
-        System.out.println("发来消息：" + data);
+        System.out.println("发来消息messageEvent：" + data);
         // 回发消息
-        client.sendEvent("messageEvent", "我是服务器都安发送的信息==" + data.getMsg());
+        client.sendEvent("messageevent", "我是服务器都安发送的信息==" + data.getMsg());
         // 广播消息
         sendBroadcast();
     }
@@ -79,7 +79,7 @@ public class MessageEventHandler {
      */
     @OnEvent(value = "messageEvent2")
     public void messageEvent2(SocketIOClient client, JSONObject data) {
-        System.out.println("发来消息：" + data);
+        System.out.println("发来消息messageEvent2：" + data);
         // 回发消息
         client.sendEvent("messageEvent2", "我是服务器都安发送的信息==" + data.getString("time"));
     }

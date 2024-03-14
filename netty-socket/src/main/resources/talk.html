@@ -32,14 +32,14 @@
     //监听服务器关闭服务事件
     socket.on('disconnect', function(){ status_update("Disconnected from Server"); });
     //监听服务器端发送消息事件
-    socket.on('messageevent', function(data) {
+    socket.on('messageEvent', function(data) {
         message(data)
-        //console.log("服务器发送的消息是："+data);
+        console.log("服务器发送的消息是messageEvent："+data);
     });
 
-    socket.on('messageevent2', function(data) {
+    socket.on('messageEvent2', function(data) {
         message(data)
-        //console.log("服务器发送的消息是："+data);
+        console.log("服务器发送的消息是messageEvent2："+data);
     });
     //断开连接
     function disconnect() {
