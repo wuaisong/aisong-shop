@@ -93,6 +93,7 @@
         <module>hello-consumer</module>
         <module>hello-provider</module>
         <module>netty</module>
+        <module>netty-socket</module>
     </modules>
     <dependencyManagement>
         <dependencies>
