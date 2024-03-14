@@ -1,5 +1,6 @@
 package aisong.utils;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -11,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 客户端和服务端都是通过事件来交互的 用于监听客户端websocket的事件 同时也可以往客户端发送事件(客户端自己可以监听)
@@ -66,7 +69,7 @@ public class MessageEventHandler {
     public void onEvent(SocketIOClient client, AckRequest request, Message data) {
         System.out.println("发来消息messageEvent：" + data);
         // 回发消息
-        client.sendEvent("messageevent", "我是服务器都安发送的信息==" + data.getMsg());
+        client.sendEvent("messageEvent", "我是服务器都安发送的信息==" + data.getMsg() + ThreadLocalRandom.current().nextInt());
         // 广播消息
         sendBroadcast();
     }
@@ -79,9 +82,9 @@ public class MessageEventHandler {
      */
     @OnEvent(value = "messageEvent2")
     public void messageEvent2(SocketIOClient client, JSONObject data) {
-        System.out.println("发来消息messageEvent2：" + data);
+        System.out.println("发来消息messageEvent2：" + data.getString("time"));
         // 回发消息
-        client.sendEvent("messageEvent2", "我是服务器都安发送的信息==" + data.getString("time"));
+        client.sendEvent("messageEvent2", "我是服务器都安发送的信息==>" + DateUtil.date() + "<==");
     }
 
     /**

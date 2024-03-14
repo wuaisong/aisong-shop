@@ -60,7 +60,7 @@
     //点击发送消息触发
     function send() {
         console.log("点击了发送消息，开始向服务器发送消息")
-        var jsonObj = {'time': new Date().toString()};
+        var jsonObj = {'time': Math.floor(Math.random() * 10)};
         //socket.emit('messageEvent', {msgContent: msg});//{msgContent: msg}是一个json对象,到了服务端会反序列化
         //socket.emit('messageEvent2', {msgContent: msg});//{msgContent: msg}是一个json对象,到了服务端会反序列化
         socket.emit('messageEvent2',jsonObj);//{msgContent: msg}是一个json对象,到了服务端会反序列化
