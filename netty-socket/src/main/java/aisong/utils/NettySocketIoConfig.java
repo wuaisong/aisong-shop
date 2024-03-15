@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class NettySocketioConfig {
+public class NettySocketIoConfig {
     /**
      * netty-socketio服务器
      * 主类的socketio
@@ -16,8 +16,7 @@ public class NettySocketioConfig {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setHostname("localhost");
         config.setPort(9092);// 监听的socket端口
-        SocketIOServer server = new SocketIOServer(config);
-        return server;
+        return new SocketIOServer(config);
     }
  
     /**
