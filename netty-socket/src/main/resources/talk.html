@@ -38,12 +38,12 @@
     socket.on('disconnect', function(){ status_update("Disconnected from Server"); });
     //监听服务器端发送消息事件
     socket.on('messageEvent', function(data) {
-        message(data)
+        message(data, "我")
         console.log("服务器发送的消息是messageEvent："+data);
     });
     //监听服务器端发送消息事件
     socket.on('Broadcast', function(data) {
-        message(data)
+        message(data, "其他人")
         console.log("服务器发送的消息是messageEvent："+data);
     });
 
@@ -52,8 +52,8 @@
         socket.disconnect();
     }
 
-    function message(data) {
-        document.getElementById('message').innerHTML = document.getElementById('message').innerHTML + "<br/>Server says: " + data;
+    function message(data, from) {
+        document.getElementById('message').innerHTML = document.getElementById('message').innerHTML + "<br/>" + from + " says: " + data;
     }
 
     function status_update(txt){
