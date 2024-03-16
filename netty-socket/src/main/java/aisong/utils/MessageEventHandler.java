@@ -1,6 +1,7 @@
 package aisong.utils;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -70,8 +71,6 @@ public class MessageEventHandler {
         System.out.println("发来消息messageEvent：" + data);
         // 回发消息
         client.sendEvent("messageEvent", "我是服务器都安发送的信息==" + data.getMsg() + ThreadLocalRandom.current().nextInt());
-        // 广播消息
-        sendBroadcast();
     }
 
     /**
@@ -82,18 +81,14 @@ public class MessageEventHandler {
      */
     @OnEvent(value = "messageEvent2")
     public void messageEvent2(SocketIOClient client, JSONObject data) {
-        System.out.println("发来消息messageEvent2：" + data.getString("time"));
+        String time = data.getString("time");
+        System.out.println("发来消息messageEvent2：" + time);
         // 回发消息
-        client.sendEvent("messageEvent2", "我是服务器都安发送的信息==>" + DateUtil.date() + "<==");
-    }
-
-    /**
-     * 广播消息
-     */
-    public void sendBroadcast() {
-        for (SocketIOClient client : socketIOClientMap.values()) {
-            if (client.isChannelOpen()) {
-                client.sendEvent("Broadcast", "当前时间", System.currentTimeMillis());
+        client.sendEvent("messageEvent2", "我是服务器都安发送的信息==>" + time + "<==");
+        // 广播消息
+        for (SocketIOClient clientTemp : socketIOClientMap.values()) {
+            if (clientTemp.isChannelOpen() && ObjectUtil.notEqual(clientTemp.getSessionId(), client.getSessionId())) {
+                clientTemp.sendEvent("Broadcast", "当前时间: " + time);
             }
         }
     }
