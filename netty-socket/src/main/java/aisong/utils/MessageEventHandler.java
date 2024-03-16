@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -86,8 +87,11 @@ public class MessageEventHandler {
         // 回发消息
         client.sendEvent("messageEvent2", "我是服务器都安发送的信息==>" + time + "<==");
         // 广播消息
+
         for (SocketIOClient clientTemp : socketIOClientMap.values()) {
-            if (clientTemp.isChannelOpen() && ObjectUtil.notEqual(clientTemp.getSessionId(), client.getSessionId())) {
+            System.out.println(clientTemp.getHandshakeData().getSingleUrlParam("mac"));
+            System.out.println(client.getHandshakeData());
+            if (clientTemp.isChannelOpen() && ObjectUtil.notEqual(clientTemp.getRemoteAddress(), client.getRemoteAddress())) {
                 clientTemp.sendEvent("Broadcast", "当前时间: " + time);
             }
         }
