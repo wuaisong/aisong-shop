@@ -2,6 +2,7 @@ package aisong.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -45,7 +46,7 @@ public class MessageEventHandler {
         socketIOClientMap.put(mac, client);
         // 通过client.sendEvent可以往客户端回发消息
         client.sendEvent("message", "onConnect back");
-        System.out.println("客户端:" + client.getSessionId() + "已连接,mac=" + mac);
+        log.info("客户端: {} 已连接", client.getHandshakeData().getSingleUrlParam("mac"));
     }
 
     /**
@@ -57,21 +58,7 @@ public class MessageEventHandler {
     public void onDisconnect(SocketIOClient client) {
         String mac = client.getHandshakeData().getSingleUrlParam("mac");
         socketIOClientMap.remove(mac);
-        System.out.println("客户端:" + client.getSessionId() + "断开连接");
-    }
-
-    /**
-     * 监听客户端事件messageEvent
-     *
-     * @param client  　客户端信息
-     * @param request 请求信息
-     * @param data    　客户端发送数据
-     */
-    @OnEvent(value = "messageEvent")
-    public void onEvent(SocketIOClient client, AckRequest request, Message data) {
-        System.out.println("发来消息messageEvent：" + data);
-        // 回发消息
-        client.sendEvent("messageEvent", "我是服务器都安发送的信息==" + data.getMsg() + ThreadLocalRandom.current().nextInt());
+        log.info("客户端: {} 断开连接", client.getHandshakeData().getSingleUrlParam("mac"));
     }
 
     /**
@@ -80,19 +67,16 @@ public class MessageEventHandler {
      * @param client 　客户端信息
      * @param data   　客户端发送数据
      */
-    @OnEvent(value = "messageEvent2")
+    @OnEvent(value = "messageEvent")
     public void messageEvent2(SocketIOClient client, JSONObject data) {
         String time = data.getString("time");
-        System.out.println("发来消息messageEvent2：" + time);
-        // 回发消息
-        client.sendEvent("messageEvent2", "我是服务器都安发送的信息==>" + time + "<==");
+        String clientMac = client.getHandshakeData().getSingleUrlParam("mac");
         // 广播消息
-
+        client.sendEvent("messageEvent", StrUtil.format("{},发送了 {}", clientMac, time));
         for (SocketIOClient clientTemp : socketIOClientMap.values()) {
-            System.out.println(clientTemp.getHandshakeData().getSingleUrlParam("mac"));
-            System.out.println(client.getHandshakeData());
-            if (clientTemp.isChannelOpen() && ObjectUtil.notEqual(clientTemp.getRemoteAddress(), client.getRemoteAddress())) {
-                clientTemp.sendEvent("Broadcast", "当前时间: " + time);
+            String clientTempMac = clientTemp.getHandshakeData().getSingleUrlParam("mac");
+            if (clientTemp.isChannelOpen() && ObjectUtil.notEqual(clientTempMac, clientMac)) {
+                clientTemp.sendEvent("Broadcast", StrUtil.format("{},发送了 {}", clientMac, time));
             }
         }
     }
