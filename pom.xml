@@ -94,6 +94,8 @@
         <module>hello-provider</module>
         <module>netty</module>
         <module>netty-socket</module>
+        <module>flow-start</module>
+
     </modules>
     <dependencyManagement>
         <dependencies>
